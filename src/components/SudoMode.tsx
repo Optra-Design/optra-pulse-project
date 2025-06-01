@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { Settings, Palette, Layout, Zap, LogIn, LogOut, User, Sparkles } from 'lucide-react';
+import { Settings, Palette, Layout, Zap, LogIn, LogOut, User, Sparkles, Smartphone } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 const SudoMode = () => {
@@ -10,6 +9,7 @@ const SudoMode = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [touchCount, setTouchCount] = useState(0);
   const { isLoggedIn, login, logout, user } = useAuth();
 
   useEffect(() => {
@@ -24,14 +24,40 @@ const SudoMode = () => {
       }
     };
 
+    // Mobile sudo mode activation - tap top-right corner 5 times quickly
+    const handleTouchStart = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      const x = touch.clientX;
+      const y = touch.clientY;
+      const windowWidth = window.innerWidth;
+      const windowHeight = window.innerHeight;
+      
+      // Check if touch is in top-right corner (within 80px from edges)
+      if (x > windowWidth - 80 && y < 80) {
+        setTouchCount(prev => prev + 1);
+        
+        // Reset counter after 2 seconds
+        setTimeout(() => setTouchCount(0), 2000);
+        
+        // Activate sudo mode after 5 quick taps
+        if (touchCount >= 4) {
+          setIsActive(true);
+          setTouchCount(0);
+          console.log('📱 Mobile SUDO MODE activated! 5 taps detected.');
+        }
+      }
+    };
+
     document.addEventListener('sudo-mode-toggle', handleSudoToggle);
     document.addEventListener('keydown', handleKeyboardShortcut);
+    document.addEventListener('touchstart', handleTouchStart, { passive: true });
     
     return () => {
       document.removeEventListener('sudo-mode-toggle', handleSudoToggle);
       document.removeEventListener('keydown', handleKeyboardShortcut);
+      document.removeEventListener('touchstart', handleTouchStart);
     };
-  }, []);
+  }, [touchCount]);
 
   const themes = [
     { id: 'default', name: 'Optra', class: '' },
@@ -204,7 +230,8 @@ const SudoMode = () => {
       </div>
 
       <div className="text-xs text-foreground/60 mt-6 space-y-1 leading-relaxed">
-        <p><strong>Access:</strong> Top-left corner or Ctrl+Shift+S</p>
+        <p><strong>Desktop:</strong> Top-left corner or Ctrl+Shift+S</p>
+        <p><strong>Mobile:</strong> <Smartphone className="w-3 h-3 inline mx-1" />Tap top-right corner 5x quickly</p>
         <p><strong>Easter Eggs:</strong> Konami code, triple-click, Ctrl+Shift+M</p>
         <p><strong>Note:</strong> Visual changes are temporary, blog edits are permanent</p>
       </div>

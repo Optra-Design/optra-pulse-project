@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navigation from '../components/Navigation';
 import { Palette, Monitor, Lightbulb, Users, ArrowRight, CheckCircle } from 'lucide-react';
@@ -17,8 +16,7 @@ const Services = () => {
         "Business card & stationery design",
         "Brand strategy & positioning"
       ],
-      timeline: "3-6 weeks",
-      price: "Starting at $5,000"
+      timeline: "3-6 weeks"
     },
     {
       icon: <Monitor className="w-8 h-8" />,
@@ -31,8 +29,7 @@ const Services = () => {
         "Responsive design systems",
         "Interactive prototyping"
       ],
-      timeline: "4-8 weeks",
-      price: "Starting at $8,000"
+      timeline: "4-8 weeks"
     },
     {
       icon: <Lightbulb className="w-8 h-8" />,
@@ -45,8 +42,7 @@ const Services = () => {
         "Content visual guidelines",
         "Multi-platform design systems"
       ],
-      timeline: "2-4 weeks",
-      price: "Starting at $3,000"
+      timeline: "2-4 weeks"
     },
     {
       icon: <Users className="w-8 h-8" />,
@@ -59,8 +55,7 @@ const Services = () => {
         "Team training & workshops",
         "Ongoing design support"
       ],
-      timeline: "1-2 weeks",
-      price: "Starting at $1,500"
+      timeline: "1-2 weeks"
     }
   ];
 
@@ -118,7 +113,6 @@ const Services = () => {
                   </div>
                   <div className="text-right text-sm text-foreground/60">
                     <p>{service.timeline}</p>
-                    <p className="font-semibold text-gradient">{service.price}</p>
                   </div>
                 </div>
                 

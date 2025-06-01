@@ -16,7 +16,8 @@ const DynamicGradients = () => {
     const throttledMouseMove = (e: MouseEvent) => {
       handleMouseMove(e);
       clearTimeout(timeout);
-      timeout = setTimeout(() => setIsMoving(false), 200);
+      // Increased timeout for slower, more gradual dimming
+      timeout = setTimeout(() => setIsMoving(false), 800);
     };
 
     window.addEventListener('mousemove', throttledMouseMove, { passive: true });
@@ -50,7 +51,8 @@ const DynamicGradients = () => {
         rgba(0, 150, 136, 0.03) 80%,
         rgba(255, 193, 7, 0.02) 100%)
     `,
-    transition: isMoving ? 'none' : 'background 1s ease-out',
+    // Slower, smoother transition for more gradual dimming
+    transition: isMoving ? 'none' : 'background 2.5s cubic-bezier(0.4, 0, 0.2, 1)',
     willChange: isMoving ? 'background' : 'auto',
   };
 
