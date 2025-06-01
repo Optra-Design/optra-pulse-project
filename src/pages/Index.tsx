@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import Navigation from '../components/Navigation';
 import AnimatedHeroText from '../components/AnimatedHeroText';
@@ -7,13 +6,13 @@ import { Link } from 'react-router-dom';
 
 const Index = () => {
   useEffect(() => {
-    // Console easter egg
     console.log(`
     🎨 Welcome to Optra Design's console!
     
     ╔═══════════════════════════════════════╗
     ║           OPTRA DESIGN               ║
     ║        Shape. Style. Scale.          ║
+    ║         Founded by Aniketh           ║
     ╚═══════════════════════════════════════╝
     
     Try typing:
@@ -21,23 +20,22 @@ const Index = () => {
     - optra.magic() for something special
     - optra.contact() for quick contact
     
-    Built with ❤️ in Bangalore
+    Built with ❤️ by Aniketh in Bangalore
     `);
 
-    // Global sudo mode function
     (window as any).optra = {
       sudo: () => {
         document.dispatchEvent(new CustomEvent('sudo-mode-toggle'));
-        console.log('🔓 Sudo mode toggled!');
+        console.log('🔓 Sudo mode toggled! Welcome to the admin zone, Aniketh!');
       },
       magic: () => {
         document.body.classList.add('glitch');
         setTimeout(() => document.body.classList.remove('glitch'), 2000);
-        console.log('✨ Magic activated!');
+        console.log('✨ Magic activated by the founder!');
       },
       contact: () => {
         window.location.href = 'mailto:aniketh@optra.me';
-        console.log('📧 Opening contact...');
+        console.log('📧 Opening contact to Aniketh...');
       }
     };
   }, []);
@@ -87,11 +85,11 @@ const Index = () => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-6xl font-bold text-gradient mb-6">
-              Crafted Excellence
+              Crafted by Aniketh
             </h2>
             <p className="text-xl text-foreground/70 max-w-3xl mx-auto">
               Every pixel purposeful. Every interaction intentional. 
-              Every design decision driven by insight and innovation.
+              Every design decision driven by passion and innovation from Bangalore's premier design studio.
             </p>
           </div>
 
@@ -119,12 +117,12 @@ const Index = () => {
 
       {/* CTA Section */}
       <section className="py-24 px-4 relative">
-        <div className="max-w-4xl mx-auto text-center glass p-12 rounded-3xl">
+        <div className="max-w-4xl mx-auto text-center glass p-12 rounded-3xl glow-hover">
           <h2 className="text-4xl md:text-5xl font-bold text-gradient mb-6">
             Ready to Transform?
           </h2>
           <p className="text-xl text-foreground/70 mb-8 max-w-2xl mx-auto">
-            Let's create something extraordinary together. 
+            Let's create something extraordinary together with Aniketh. 
             Premium design solutions that elevate your brand and captivate your audience.
           </p>
           
@@ -138,16 +136,16 @@ const Index = () => {
             </Link>
             
             <Link 
-              to="/work"
+              to="/blog"
               className="px-8 py-4 border border-white/20 text-foreground font-semibold rounded-full hover:bg-white/5 transition-all duration-300 hover:border-white/40"
             >
-              View Portfolio
+              Read the Blog
             </Link>
           </div>
 
           <div className="mt-12 pt-8 border-t border-white/10">
             <p className="text-sm text-foreground/50">
-              Based in Bangalore • Response within 48 hours • Premium quality guaranteed
+              Founded by Aniketh in Bangalore • Response within 48 hours • Premium quality guaranteed
             </p>
           </div>
         </div>

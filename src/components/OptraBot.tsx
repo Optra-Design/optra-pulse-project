@@ -1,13 +1,13 @@
 
 import React, { useState, useEffect } from 'react';
-import { MessageCircle, X, Send, Sparkles } from 'lucide-react';
+import { MessageCircle, X, Send, Sparkles, Heart, Zap } from 'lucide-react';
 
 const OptraBot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "Hey there! I'm OptraBot ✨ I can help you discover our services, share the founder's story, or schedule a meeting. What interests you?",
+      text: "Hey there! I'm OptraBot ✨ I'm here to help you discover Aniketh's design work, learn about Optra's services, or connect you directly with the founder. What interests you?",
       isBot: true,
       timestamp: new Date()
     }
@@ -16,32 +16,34 @@ const OptraBot = () => {
   const [isTyping, setIsTyping] = useState(false);
 
   const quickReplies = [
-    "Tell me about your services",
-    "Who's the founder?",
+    "Tell me about Aniketh",
+    "What services do you offer?",
+    "Show me the blog",
     "Schedule a meeting",
-    "Show me your work",
-    "Pricing information"
+    "SUDO mode access"
   ];
 
   const botResponses: { [key: string]: string } = {
-    "services": "Optra specializes in premium digital design and branding! We offer brand identity design, digital experiences, creative direction, and strategic consultation. Each project is crafted with meticulous attention to detail. What specific service interests you? 🎨",
-    "founder": "Optra is the passion project of a solo founder based in Bangalore! Our founder believes in the power of exceptional design to transform businesses and create lasting impact. The studio was born from a vision to deliver hyper-premium experiences that truly matter. ✨",
-    "meeting": "I'd love to help you schedule a meeting! For the fastest response, reach out to aniketh@optra.me - you'll hear back within 48 hours. Or feel free to share your project details here and I'll make sure they reach the right person! 📅",
-    "work": "Our portfolio showcases transformative brand identities and digital experiences that drive results. Each project tells a unique story of creativity meeting strategy. Check out our Work page to see how we've helped brands shape, style, and scale! 🚀",
-    "pricing": "Every project is unique, so we provide custom quotes based on your specific needs and goals. Reach out to aniketh@optra.me with your project details for a personalized proposal. Premium quality deserves premium attention! 💎"
+    "aniketh": "Aniketh is the passionate founder behind Optra Design! 🎨 Based in Bangalore, he's a solo creative force who believes in the power of exceptional design to transform businesses. He founded Optra with a vision to deliver hyper-premium experiences that truly matter. Check out the /founder page to learn more about his journey! ✨",
+    "founder": "Aniketh founded Optra Design as a solo venture in Bangalore! 🚀 He's passionate about creating design solutions that don't just look beautiful, but drive real business results. His philosophy: every pixel should have a purpose, every interaction should feel intentional. Want to meet him? He's usually just an email away! 😊",
+    "services": "Optra specializes in premium digital experiences! 🎯 We offer brand identity design, interactive web experiences, creative direction, and strategic consultation. Each project is crafted with meticulous attention to detail by Aniketh himself. What specific service interests you? 🎨",
+    "meeting": "I'd love to help you connect with Aniketh! 📅 For the fastest response, reach out to aniketh@optra.me - you'll hear back within 48 hours. Or share your project details here and I'll make sure they reach him! He's always excited to discuss new projects. ✨",
+    "work": "Our portfolio showcases transformative brand identities and digital experiences that drive results! 🌟 Each project tells a unique story of creativity meeting strategy. Unfortunately, we removed the work page to focus on new exciting features, but you can always email Aniketh for case studies! 📧",
+    "blog": "Check out our new blog at /blog! 📝 Aniketh shares insights about design, creativity, and the journey of building exceptional experiences. It's where strategy meets storytelling! ✨",
+    "sudo": "Psst... 🤫 Looking for SUDO mode? Try clicking the top-left corner of the screen or press Ctrl+Shift+S. Only true design nerds find this! 😉 There might be other easter eggs hidden around too... 🥚",
+    "contact": "Ready to create something amazing? 🚀 Reach out to aniketh@optra.me and let's start the conversation! Aniketh personally responds to every inquiry within 48 hours. Based in Bangalore but working globally! 🌍"
   };
 
   useEffect(() => {
-    // Re-engage inactive users
     const timer = setTimeout(() => {
-      if (!isOpen) {
+      if (!isOpen && messages.length === 1) {
         setIsOpen(true);
-        addBotMessage("Still there? I noticed you might need some design inspiration. How can Optra help bring your vision to life? 🌟");
+        addBotMessage("Still exploring? I'm here if you need a guide through Aniketh's design universe! Try asking about SUDO mode for some hidden features 🎉");
       }
     }, 30000);
 
     return () => clearTimeout(timer);
-  }, [isOpen]);
+  }, [isOpen, messages.length]);
 
   const addBotMessage = (text: string) => {
     setIsTyping(true);
@@ -67,22 +69,23 @@ const OptraBot = () => {
     setMessages(prev => [...prev, userMessage]);
     setInputText('');
 
-    // Simple keyword matching for responses
     const lowercaseText = text.toLowerCase();
     let responseKey = '';
 
-    if (lowercaseText.includes('service') || lowercaseText.includes('what') || lowercaseText.includes('do')) {
+    if (lowercaseText.includes('aniketh') || lowercaseText.includes('founder') || lowercaseText.includes('who')) {
+      responseKey = lowercaseText.includes('aniketh') ? 'aniketh' : 'founder';
+    } else if (lowercaseText.includes('service') || lowercaseText.includes('what') || lowercaseText.includes('do')) {
       responseKey = 'services';
-    } else if (lowercaseText.includes('founder') || lowercaseText.includes('who') || lowercaseText.includes('about')) {
-      responseKey = 'founder';
     } else if (lowercaseText.includes('meeting') || lowercaseText.includes('schedule') || lowercaseText.includes('contact')) {
-      responseKey = 'meeting';
+      responseKey = 'contact';
     } else if (lowercaseText.includes('work') || lowercaseText.includes('portfolio') || lowercaseText.includes('project')) {
       responseKey = 'work';
-    } else if (lowercaseText.includes('price') || lowercaseText.includes('cost') || lowercaseText.includes('quote')) {
-      responseKey = 'pricing';
+    } else if (lowercaseText.includes('blog') || lowercaseText.includes('read') || lowercaseText.includes('article')) {
+      responseKey = 'blog';
+    } else if (lowercaseText.includes('sudo') || lowercaseText.includes('admin') || lowercaseText.includes('hidden')) {
+      responseKey = 'sudo';
     } else {
-      addBotMessage("That's a great question! For detailed information, I'd recommend reaching out to aniketh@optra.me. Meanwhile, feel free to explore our services or check out our portfolio. How else can I help you today? 😊");
+      addBotMessage("That's an interesting question! 🤔 I'm still learning, but Aniketh would love to chat about it directly. Reach out to aniketh@optra.me for detailed discussions! In the meantime, try exploring our services or checking out the founder's story. Any other questions? 😊");
       return;
     }
 
@@ -91,50 +94,47 @@ const OptraBot = () => {
 
   return (
     <>
-      {/* Chat Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-optra-gradient text-white shadow-lg transition-all duration-300 hover:scale-110 glow-hover ${
-          isOpen ? 'rotate-180' : ''
+        className={`fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-optra-gradient text-white shadow-lg transition-all duration-300 hover:scale-110 glow-hover ${
+          isOpen ? 'rotate-180' : 'animate-bounce-subtle'
         }`}
       >
-        {isOpen ? <X size={24} /> : <MessageCircle size={24} />}
+        {isOpen ? <X size={28} /> : <MessageCircle size={28} />}
       </button>
 
-      {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 z-50 w-80 h-96 bg-background/95 backdrop-blur-lg border border-white/20 rounded-2xl shadow-2xl flex flex-col animate-slide-in-right">
-          {/* Header */}
-          <div className="p-4 border-b border-white/10 flex items-center gap-3">
+        <div className="fixed bottom-28 right-6 z-50 w-80 h-96 bg-background/95 backdrop-blur-lg border border-white/30 rounded-3xl shadow-2xl flex flex-col animate-slide-in-right glow-hover">
+          <div className="p-4 border-b border-white/20 flex items-center gap-3">
             <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
             <div>
-              <h3 className="font-semibold text-gradient">OptraBot</h3>
-              <p className="text-xs text-foreground/60">Always here to help</p>
+              <h3 className="font-bold text-gradient">OptraBot</h3>
+              <p className="text-xs text-foreground/70">Aniketh's AI assistant</p>
             </div>
+            <Sparkles className="w-4 h-4 text-gradient ml-auto animate-spin" style={{ animationDuration: '3s' }} />
           </div>
 
-          {/* Messages */}
           <div className="flex-1 p-4 overflow-y-auto space-y-4">
             {messages.map(message => (
               <div
                 key={message.id}
-                className={`flex ${message.isBot ? 'justify-start' : 'justify-end'}`}
+                className={`flex ${message.isBot ? 'justify-start' : 'justify-end'} animate-fade-in`}
               >
                 <div
                   className={`max-w-xs p-3 rounded-2xl ${
                     message.isBot
-                      ? 'bg-white/10 text-foreground'
+                      ? 'bg-white/10 text-foreground border border-white/20'
                       : 'bg-optra-gradient text-white'
                   }`}
                 >
-                  <p className="text-sm">{message.text}</p>
+                  <p className="text-sm leading-relaxed">{message.text}</p>
                 </div>
               </div>
             ))}
             
             {isTyping && (
               <div className="flex justify-start">
-                <div className="bg-white/10 p-3 rounded-2xl">
+                <div className="bg-white/10 p-3 rounded-2xl border border-white/20">
                   <div className="flex gap-1">
                     <div className="w-2 h-2 bg-foreground/50 rounded-full animate-bounce"></div>
                     <div className="w-2 h-2 bg-foreground/50 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
@@ -145,14 +145,13 @@ const OptraBot = () => {
             )}
           </div>
 
-          {/* Quick Replies */}
-          <div className="p-2 border-t border-white/10">
-            <div className="flex flex-wrap gap-1 mb-2">
+          <div className="p-3 border-t border-white/20">
+            <div className="flex flex-wrap gap-1 mb-3">
               {quickReplies.slice(0, 3).map((reply, index) => (
                 <button
                   key={index}
                   onClick={() => handleSendMessage(reply)}
-                  className="text-xs px-2 py-1 bg-white/10 rounded-full hover:bg-white/20 transition-colors duration-200"
+                  className="text-xs px-3 py-1 bg-white/10 rounded-full hover:bg-white/20 transition-all hover:scale-105 border border-white/20"
                 >
                   {reply}
                 </button>
@@ -160,8 +159,7 @@ const OptraBot = () => {
             </div>
           </div>
 
-          {/* Input */}
-          <div className="p-4 border-t border-white/10">
+          <div className="p-4 border-t border-white/20">
             <div className="flex gap-2">
               <input
                 type="text"
@@ -169,7 +167,7 @@ const OptraBot = () => {
                 onChange={(e) => setInputText(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && inputText.trim() && handleSendMessage(inputText)}
                 placeholder="Ask me anything..."
-                className="flex-1 bg-white/10 border border-white/20 rounded-full px-4 py-2 text-sm focus:outline-none focus:border-white/40"
+                className="flex-1 bg-white/10 border border-white/30 rounded-full px-4 py-2 text-sm focus:outline-none focus:border-white/50 transition-colors"
               />
               <button
                 onClick={() => inputText.trim() && handleSendMessage(inputText)}
