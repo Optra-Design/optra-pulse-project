@@ -97,7 +97,7 @@ const Index = () => {
             {features.map((feature, index) => (
               <div 
                 key={index}
-                className="group p-8 glass rounded-2xl hover:bg-white/10 transition-all duration-500 glow-hover animate-fade-in"
+                className="group p-8 glass rounded-2xl hover:bg-white/10 transition-all duration-500 glow-hover animate-fade-in cursor-pointer"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="text-gradient mb-4 group-hover:scale-110 transition-transform duration-300">
@@ -129,7 +129,7 @@ const Index = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link 
               to="/contact"
-              className="group flex items-center gap-2 px-8 py-4 bg-optra-gradient text-white font-semibold rounded-full transition-all duration-300 hover:scale-105 glow-hover"
+              className="group flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#FF6B35] via-[#E91E63] to-[#9C27B0] text-white font-semibold rounded-full transition-all duration-300 hover:scale-105 glow-hover"
             >
               Get Started
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
@@ -137,7 +137,7 @@ const Index = () => {
             
             <Link 
               to="/blog"
-              className="px-8 py-4 border border-white/20 text-foreground font-semibold rounded-full hover:bg-white/5 transition-all duration-300 hover:border-white/40"
+              className="px-8 py-4 border border-white/20 text-foreground font-semibold rounded-full hover:bg-white/5 transition-all duration-300 hover:border-white/40 hover:text-gradient"
             >
               Read the Blog
             </Link>
