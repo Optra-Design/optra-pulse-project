@@ -1,11 +1,35 @@
 import React, { useEffect } from 'react';
 import Navigation from '../components/Navigation';
 import AnimatedHeroText from '../components/AnimatedHeroText';
+import SecretSudoButton from '../components/SecretSudoButton';
 import { ArrowRight, Sparkles, Zap, Palette, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Index = () => {
   useEffect(() => {
+    // SEO meta tags
+    document.title = 'Optra Design - Premium Design Studio by Aniketh | Brand Identity & Digital Experiences';
+    
+    // Update meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Optra Design is a premium design studio founded by Aniketh in Bangalore. We create distinctive brand identities, interactive digital experiences, and strategic creative direction that elevates your business.');
+    } else {
+      const meta = document.createElement('meta');
+      meta.name = 'description';
+      meta.content = 'Optra Design is a premium design studio founded by Aniketh in Bangalore. We create distinctive brand identities, interactive digital experiences, and strategic creative direction that elevates your business.';
+      document.head.appendChild(meta);
+    }
+
+    // Keywords meta tag
+    const metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (!metaKeywords) {
+      const meta = document.createElement('meta');
+      meta.name = 'keywords';
+      meta.content = 'design studio, brand identity, UI UX design, digital experiences, creative direction, Bangalore designer, Aniketh, Optra Design, web design, graphic design';
+      document.head.appendChild(meta);
+    }
+
     console.log(`
     🎨 Welcome to Optra Design's console!
     
@@ -66,6 +90,7 @@ const Index = () => {
   return (
     <div className="min-h-screen relative">
       <Navigation />
+      <SecretSudoButton />
       
       {/* Hero Section */}
       <section className="min-h-screen flex items-center justify-center px-4 relative">
@@ -75,6 +100,7 @@ const Index = () => {
         <Link 
           to="/404" 
           className="absolute bottom-8 right-8 opacity-10 hover:opacity-100 transition-opacity duration-300 text-xs text-foreground/50 hover:text-gradient"
+          aria-label="Hidden easter egg"
         >
           ⚠️
         </Link>
