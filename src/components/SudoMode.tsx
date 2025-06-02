@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Settings, Palette, Layout, Zap, LogIn, LogOut, User, Sparkles, Smartphone, Bug, Minimize2, Maximize2 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
@@ -7,6 +6,9 @@ import { useNavigate } from 'react-router-dom';
 const SudoMode = () => {
   const [isActive, setIsActive] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
+  const [position, setPosition] = useState({ x: 16, y: 16 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [theme, setTheme] = useState('default');
   const [layout, setLayout] = useState('default');
   const [showLogin, setShowLogin] = useState(false);
@@ -59,16 +61,40 @@ const SudoMode = () => {
       }
     };
 
+    const handleMouseMove = (e: MouseEvent) => {
+      if (isDragging && isMinimized) {
+        const newX = e.clientX - dragOffset.x;
+        const newY = e.clientY - dragOffset.y;
+        
+        // Keep within window bounds
+        const maxX = window.innerWidth - 64; // 64px = w-16
+        const maxY = window.innerHeight - 64;
+        
+        setPosition({
+          x: Math.max(0, Math.min(newX, maxX)),
+          y: Math.max(0, Math.min(newY, maxY))
+        });
+      }
+    };
+
+    const handleMouseUp = () => {
+      setIsDragging(false);
+    };
+
     document.addEventListener('sudo-mode-toggle', handleSudoToggle);
     document.addEventListener('keydown', handleKeyboardShortcut);
     document.addEventListener('touchstart', handleTouchStart, { passive: true });
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
     
     return () => {
       document.removeEventListener('sudo-mode-toggle', handleSudoToggle);
       document.removeEventListener('keydown', handleKeyboardShortcut);
       document.removeEventListener('touchstart', handleTouchStart);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [touchCount, isActive]);
+  }, [touchCount, isActive, isDragging, dragOffset]);
 
   const themes = [
     { id: 'default', name: 'Optra', class: '' },
@@ -115,14 +141,33 @@ const SudoMode = () => {
     }
   };
 
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (isMinimized) {
+      setIsDragging(true);
+      const rect = e.currentTarget.getBoundingClientRect();
+      setDragOffset({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      });
+    }
+  };
+
   if (!isActive) return null;
 
   return (
-    <div className={`fixed top-4 left-4 z-50 bg-background/95 backdrop-blur-lg border border-white/30 rounded-3xl shadow-2xl animate-fade-in glow-hover transition-all duration-300 ${
-      isMinimized ? 'w-16 h-16' : 'p-6 max-w-sm w-80'
-    }`}>
+    <div 
+      className={`fixed z-50 bg-background/95 backdrop-blur-lg border border-white/30 rounded-3xl shadow-2xl animate-fade-in glow-hover transition-all duration-300 ${
+        isMinimized ? 'w-16 h-16 cursor-move' : 'p-6 max-w-sm w-80 top-4 left-4'
+      }`}
+      style={isMinimized ? { 
+        top: `${position.y}px`, 
+        left: `${position.x}px`,
+        userSelect: 'none'
+      } : {}}
+      onMouseDown={handleMouseDown}
+    >
       {isMinimized ? (
-        // Minimized state
+        // Minimized state - draggable
         <div className="w-full h-full flex items-center justify-center">
           <button
             onClick={() => setIsMinimized(false)}
@@ -289,7 +334,7 @@ const SudoMode = () => {
             <p><strong>Desktop:</strong> Top-left corner or Ctrl+Shift+S</p>
             <p><strong>Mobile:</strong> <Smartphone className="w-3 h-3 inline mx-1" />Tap top-right corner 5x quickly</p>
             <p><strong>Minimize:</strong> Ctrl+Shift+M or click minimize button</p>
-            <p><strong>Easter Eggs:</strong> Konami code, triple-click, Ctrl+Shift+M</p>
+            <p><strong>Drag:</strong> Click and drag minimized window to move</p>
             <p><strong>Note:</strong> Visual changes are temporary, blog edits are permanent</p>
           </div>
         </>
