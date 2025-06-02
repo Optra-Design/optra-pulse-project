@@ -1,15 +1,18 @@
 
 import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { Home, Search, ArrowLeft, Zap, RotateCw, Sparkles, GamepadIcon } from 'lucide-react';
+import { Home, Search, ArrowLeft, Zap, RotateCw, Sparkles, GamepadIcon, Eye, Brain } from 'lucide-react';
 
 const NotFound = () => {
   const location = useLocation();
   const [glitchText, setGlitchText] = useState('404');
-  const [particles, setParticles] = useState<Array<{ id: number; x: number; y: number }>>([]);
+  const [particles, setParticles] = useState<Array<{ id: number; x: number; y: number; velocity: { x: number; y: number } }>>([]);
   const [shakeIntensity, setShakeIntensity] = useState(0);
   const [secretClicks, setSecretClicks] = useState(0);
   const [showSecret, setShowSecret] = useState(false);
+  const [mouseTrail, setMouseTrail] = useState<Array<{ x: number; y: number; id: number }>>([]);
+  const [matrixRain, setMatrixRain] = useState<Array<{ id: number; x: number; y: number; speed: number; char: string }>>([]);
+  const [aiThinking, setAiThinking] = useState(false);
 
   useEffect(() => {
     console.error(
@@ -19,17 +22,34 @@ const NotFound = () => {
 
     // Enhanced glitch effect for 404 text
     const glitchInterval = setInterval(() => {
-      const glitchOptions = ['404', '4∅4', '4Ø4', '₄0₄', '404', '╔═╗', '███', '┬ ┬┬', '├─┤', '░▒▓'];
+      const glitchOptions = [
+        '404', '4∅4', '4Ø4', '₄0₄', '404', '╔═╗', '███', '┬ ┬┬', '├─┤', '░▒▓',
+        '4̴0̷4̸', '▓▒░', '◆◇◆', '●○●', '※※※', '⚡⚡⚡'
+      ];
       setGlitchText(glitchOptions[Math.floor(Math.random() * glitchOptions.length)]);
     }, 150);
 
-    // Generate floating particles
-    const particleArray = Array.from({ length: 30 }, (_, i) => ({
+    // Generate floating particles with physics
+    const particleArray = Array.from({ length: 50 }, (_, i) => ({
       id: i,
-      x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 800),
-      y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 600),
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      velocity: {
+        x: (Math.random() - 0.5) * 2,
+        y: (Math.random() - 0.5) * 2
+      }
     }));
     setParticles(particleArray);
+
+    // Matrix rain effect
+    const matrixArray = Array.from({ length: 20 }, (_, i) => ({
+      id: i,
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      speed: Math.random() * 3 + 1,
+      char: String.fromCharCode(0x30A0 + Math.random() * 96)
+    }));
+    setMatrixRain(matrixArray);
 
     // Screen shake effect on load
     setShakeIntensity(1);
@@ -37,6 +57,59 @@ const NotFound = () => {
 
     return () => clearInterval(glitchInterval);
   }, [location.pathname]);
+
+  // Animate particles
+  useEffect(() => {
+    const animateParticles = () => {
+      setParticles(prev => prev.map(particle => ({
+        ...particle,
+        x: (particle.x + particle.velocity.x + window.innerWidth) % window.innerWidth,
+        y: (particle.y + particle.velocity.y + window.innerHeight) % window.innerHeight,
+        velocity: {
+          x: particle.velocity.x * 0.999,
+          y: particle.velocity.y * 0.999
+        }
+      })));
+    };
+
+    const interval = setInterval(animateParticles, 50);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Animate matrix rain
+  useEffect(() => {
+    const animateMatrix = () => {
+      setMatrixRain(prev => prev.map(drop => ({
+        ...drop,
+        y: drop.y > window.innerHeight ? -20 : drop.y + drop.speed,
+        char: Math.random() < 0.1 ? String.fromCharCode(0x30A0 + Math.random() * 96) : drop.char
+      })));
+    };
+
+    const interval = setInterval(animateMatrix, 100);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Mouse trail effect
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMouseTrail(prev => [
+        ...prev.slice(-10),
+        { x: e.clientX, y: e.clientY, id: Date.now() }
+      ]);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Clean up mouse trail
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMouseTrail(prev => prev.slice(1));
+    }, 100);
+    return () => clearInterval(interval);
+  }, []);
 
   const suggestions = [
     { path: '/', label: 'Home', icon: <Home className="w-4 h-4" /> },
@@ -50,22 +123,42 @@ const NotFound = () => {
     if (secretClicks >= 4) {
       setShowSecret(true);
       setSecretClicks(0);
-      document.body.style.filter = 'hue-rotate(180deg) saturate(1.5)';
+      setAiThinking(true);
+      
+      // AI thinking simulation
+      setTimeout(() => {
+        document.body.style.filter = 'hue-rotate(180deg) saturate(1.5) brightness(1.2)';
+        setAiThinking(false);
+      }, 2000);
+      
       setTimeout(() => {
         document.body.style.filter = '';
         setShowSecret(false);
-      }, 3000);
+      }, 5000);
     }
   };
 
   const generateExplosion = (x: number, y: number) => {
-    const newParticles = Array.from({ length: 10 }, (_, i) => ({
+    const newParticles = Array.from({ length: 15 }, (_, i) => ({
       id: Date.now() + i,
       x,
       y,
+      velocity: {
+        x: (Math.random() - 0.5) * 10,
+        y: (Math.random() - 0.5) * 10
+      }
     }));
     setParticles(prev => [...prev, ...newParticles]);
-    setTimeout(() => setParticles(prev => prev.slice(10)), 2000);
+    setTimeout(() => setParticles(prev => prev.slice(15)), 3000);
+  };
+
+  const triggerGlobalGlitch = () => {
+    document.body.style.animation = 'glitch 0.5s ease-in-out';
+    document.body.style.filter = 'contrast(200%) brightness(150%)';
+    setTimeout(() => {
+      document.body.style.animation = '';
+      document.body.style.filter = '';
+    }, 500);
   };
 
   return (
@@ -77,32 +170,64 @@ const NotFound = () => {
         transform: shakeIntensity > 0 ? `translateX(${Math.random() * 4 - 2}px)` : 'none',
       }}
     >
+      {/* Matrix rain background */}
+      {matrixRain.map(drop => (
+        <div
+          key={drop.id}
+          className="absolute text-green-400 opacity-30 pointer-events-none font-mono text-sm"
+          style={{
+            left: `${drop.x}px`,
+            top: `${drop.y}px`,
+            textShadow: '0 0 5px #00ff00'
+          }}
+        >
+          {drop.char}
+        </div>
+      ))}
+
+      {/* Mouse trail */}
+      {mouseTrail.map((point, index) => (
+        <div
+          key={point.id}
+          className="absolute pointer-events-none"
+          style={{
+            left: `${point.x}px`,
+            top: `${point.y}px`,
+            opacity: (index + 1) / mouseTrail.length * 0.5,
+            transform: `scale(${(index + 1) / mouseTrail.length})`
+          }}
+        >
+          ✨
+        </div>
+      ))}
+
       {/* Enhanced animated background particles */}
       {particles.map(particle => (
         <div
           key={particle.id}
-          className="absolute opacity-30 animate-bounce cursor-pointer hover:scale-150 transition-transform"
+          className="absolute opacity-40 cursor-pointer hover:scale-150 transition-transform hover:rotate-180"
           style={{
             left: `${particle.x}px`,
             top: `${particle.y}px`,
-            animationDelay: `${particle.id * 0.1}s`,
-            animationDuration: `${2 + Math.random() * 2}s`,
+            fontSize: `${Math.random() * 20 + 10}px`,
+            filter: `hue-rotate(${particle.x + particle.y}deg)`
           }}
           onClick={(e) => generateExplosion(e.clientX, e.clientY)}
         >
-          {['💫', '⭐', '✨', '🌟', '💥', '🎯', '🔥'][particle.id % 7]}
+          {['💫', '⭐', '✨', '🌟', '💥', '🎯', '🔥', '⚡', '🌀', '💎'][particle.id % 10]}
         </div>
       ))}
 
-      <div className="text-center z-10 max-w-3xl mx-auto px-4">
+      <div className="text-center z-10 max-w-4xl mx-auto px-4">
         {/* Enhanced glitching 404 */}
         <div className="mb-8">
           <h1 
-            className="text-8xl md:text-9xl font-black text-gradient mb-4 cursor-pointer hover:scale-110 transition-transform duration-300"
+            className="text-8xl md:text-9xl font-black text-gradient mb-4 cursor-pointer hover:scale-110 transition-transform duration-300 select-none"
             onClick={handleSecretClick}
             style={{
               textShadow: '0 0 20px rgba(255, 107, 53, 0.5), 0 0 40px rgba(233, 30, 99, 0.3)',
-              filter: `hue-rotate(${Math.random() * 360}deg)`,
+              filter: `hue-rotate(${Math.random() * 360}deg) ${shakeIntensity > 0 ? 'blur(2px)' : ''}`,
+              animation: aiThinking ? 'pulse 0.5s infinite' : 'none'
             }}
           >
             {glitchText}
@@ -110,41 +235,63 @@ const NotFound = () => {
           <div className="w-32 h-2 bg-gradient-to-r from-[#FF6B35] via-[#E91E63] to-[#9C27B0] mx-auto animate-pulse rounded-full"></div>
         </div>
 
+        {/* AI Thinking Indicator */}
+        {aiThinking && (
+          <div className="mb-8 flex items-center justify-center gap-3 animate-fade-in">
+            <Brain className="w-8 h-8 text-purple-400 animate-pulse" />
+            <div className="text-purple-400 font-semibold">AI is analyzing the void...</div>
+            <Eye className="w-8 h-8 text-blue-400 animate-bounce" />
+          </div>
+        )}
+
         {/* Interactive error message */}
-        <div className="glass p-8 rounded-3xl mb-8 animate-fade-in hover:scale-105 transition-transform duration-300">
+        <div className="glass p-8 rounded-3xl mb-8 animate-fade-in hover:scale-105 transition-transform duration-300 hover:shadow-2xl">
           <h2 className="text-4xl font-bold text-gradient mb-4 animate-pulse">
-            🚀 Lost in Cyberspace!
+            🚀 Lost in the Digital Multiverse!
           </h2>
           <p className="text-xl text-foreground/80 mb-4">
-            You've discovered a digital dimension that doesn't exist... yet! 
-            Our design algorithms are working to create this page.
+            You've discovered a quantum dimension that exists between realities! 
+            Our AI algorithms are working overtime to create this page.
           </p>
           <p className="text-sm text-foreground/60 mb-4">
-            Attempted route: <code className="bg-white/20 px-3 py-1 rounded-lg font-mono">{location.pathname}</code>
+            Attempted route: <code className="bg-white/20 px-3 py-1 rounded-lg font-mono hover:bg-white/30 transition-colors">{location.pathname}</code>
           </p>
           
-          {/* Interactive elements */}
-          <div className="flex justify-center gap-4 mt-6">
+          {/* Enhanced interactive elements */}
+          <div className="flex flex-wrap justify-center gap-4 mt-6">
             <button
               onClick={() => {
                 setShakeIntensity(1);
                 setTimeout(() => setShakeIntensity(0), 1000);
               }}
-              className="px-4 py-2 bg-red-500/20 text-red-400 rounded-full hover:bg-red-500/30 transition-all hover:scale-110 animate-bounce"
+              className="px-4 py-2 bg-red-500/20 text-red-400 rounded-full hover:bg-red-500/30 transition-all hover:scale-110 animate-bounce hover:rotate-12"
             >
               <RotateCw className="w-4 h-4 inline mr-2" />
-              Shake Screen
+              Reality Glitch
             </button>
             
             <button
-              onClick={() => {
-                const colors = ['hue-rotate(90deg)', 'hue-rotate(180deg)', 'hue-rotate(270deg)', ''];
-                document.body.style.filter = colors[Math.floor(Math.random() * colors.length)];
-              }}
+              onClick={triggerGlobalGlitch}
               className="px-4 py-2 bg-purple-500/20 text-purple-400 rounded-full hover:bg-purple-500/30 transition-all hover:scale-110"
             >
               <Sparkles className="w-4 h-4 inline mr-2" />
-              Color Shift
+              Matrix Mode
+            </button>
+
+            <button
+              onClick={() => {
+                setMatrixRain(prev => [...prev, ...Array.from({ length: 30 }, (_, i) => ({
+                  id: Date.now() + i,
+                  x: Math.random() * window.innerWidth,
+                  y: -20,
+                  speed: Math.random() * 5 + 2,
+                  char: String.fromCharCode(0x30A0 + Math.random() * 96)
+                }))]);
+              }}
+              className="px-4 py-2 bg-green-500/20 text-green-400 rounded-full hover:bg-green-500/30 transition-all hover:scale-110"
+            >
+              <Zap className="w-4 h-4 inline mr-2" />
+              Data Rain
             </button>
           </div>
         </div>
@@ -160,7 +307,7 @@ const NotFound = () => {
               <Link
                 key={suggestion.path}
                 to={suggestion.path}
-                className="group p-6 glass rounded-2xl hover:bg-white/20 transition-all duration-500 animate-fade-in hover:scale-110 hover:rotate-2"
+                className="group p-6 glass rounded-2xl hover:bg-white/20 transition-all duration-500 animate-fade-in hover:scale-110 hover:rotate-2 hover:shadow-2xl"
                 style={{ animationDelay: `${index * 0.2}s` }}
                 onMouseEnter={(e) => generateExplosion(e.clientX, e.clientY)}
               >
@@ -175,10 +322,10 @@ const NotFound = () => {
           </div>
 
           {/* Enhanced interactive playground */}
-          <div className="glass p-8 rounded-3xl mb-6 animate-fade-in">
+          <div className="glass p-8 rounded-3xl mb-6 animate-fade-in hover:shadow-2xl transition-shadow">
             <div className="flex items-center justify-center gap-3 mb-6">
               <GamepadIcon className="w-6 h-6 text-gradient animate-bounce" />
-              <h3 className="text-xl font-bold text-gradient">Interactive Zone</h3>
+              <h3 className="text-xl font-bold text-gradient">Quantum Playground</h3>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -186,42 +333,58 @@ const NotFound = () => {
                 onClick={() => {
                   document.querySelectorAll('.glass').forEach(el => {
                     (el as HTMLElement).style.animation = 'glow 1s ease-in-out';
+                    (el as HTMLElement).style.boxShadow = '0 0 50px rgba(255, 107, 53, 0.8)';
                   });
+                  setTimeout(() => {
+                    document.querySelectorAll('.glass').forEach(el => {
+                      (el as HTMLElement).style.boxShadow = '';
+                    });
+                  }, 1000);
                 }}
-                className="p-4 bg-blue-500/20 text-blue-400 rounded-xl hover:bg-blue-500/30 transition-all hover:scale-105 font-semibold"
+                className="p-4 bg-blue-500/20 text-blue-400 rounded-xl hover:bg-blue-500/30 transition-all hover:scale-105 font-semibold hover:rotate-3"
               >
-                ✨ Make Everything Glow
+                ✨ Cosmic Glow
               </button>
               
               <button
                 onClick={() => {
-                  const newParticles = Array.from({ length: 20 }, (_, i) => ({
+                  const newParticles = Array.from({ length: 50 }, (_, i) => ({
                     id: Date.now() + i,
-                    x: Math.random() * window.innerWidth,
-                    y: Math.random() * window.innerHeight,
+                    x: window.innerWidth / 2,
+                    y: window.innerHeight / 2,
+                    velocity: {
+                      x: (Math.random() - 0.5) * 20,
+                      y: (Math.random() - 0.5) * 20
+                    }
                   }));
                   setParticles(prev => [...prev, ...newParticles]);
                 }}
-                className="p-4 bg-green-500/20 text-green-400 rounded-xl hover:bg-green-500/30 transition-all hover:scale-105 font-semibold"
+                className="p-4 bg-green-500/20 text-green-400 rounded-xl hover:bg-green-500/30 transition-all hover:scale-105 font-semibold hover:rotate-3"
               >
-                🎆 Particle Burst
+                🎆 Supernova
               </button>
               
               <button
                 onClick={() => {
                   document.body.style.animation = 'pulse 2s ease-in-out';
-                  setTimeout(() => document.body.style.animation = '', 2000);
+                  document.body.style.background = 'radial-gradient(circle, rgba(255,107,53,0.1) 0%, rgba(0,0,0,1) 100%)';
+                  setTimeout(() => {
+                    document.body.style.animation = '';
+                    document.body.style.background = '';
+                  }, 2000);
                 }}
-                className="p-4 bg-yellow-500/20 text-yellow-400 rounded-xl hover:bg-yellow-500/30 transition-all hover:scale-105 font-semibold"
+                className="p-4 bg-yellow-500/20 text-yellow-400 rounded-xl hover:bg-yellow-500/30 transition-all hover:scale-105 font-semibold hover:rotate-3"
               >
-                💥 Screen Pulse
+                💥 Dimension Shift
               </button>
             </div>
 
             {showSecret && (
-              <div className="mt-6 p-4 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl animate-scale-in">
-                <p className="text-gradient font-bold animate-pulse">
-                  🎉 SECRET UNLOCKED! You found the hidden interactive mode!
+              <div className="mt-6 p-4 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl animate-scale-in border border-purple-400/30">
+                <p className="text-gradient font-bold animate-pulse flex items-center justify-center gap-2">
+                  <Brain className="w-5 h-5" />
+                  🎉 QUANTUM CONSCIOUSNESS UNLOCKED! AI MODE ACTIVATED!
+                  <Eye className="w-5 h-5" />
                 </p>
               </div>
             )}
@@ -230,7 +393,7 @@ const NotFound = () => {
           {/* Enhanced call to action */}
           <Link
             to="/"
-            className="inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-[#FF6B35] via-[#E91E63] to-[#9C27B0] text-white font-bold rounded-full hover:scale-110 transition-all duration-300 text-lg shadow-2xl animate-bounce"
+            className="inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-[#FF6B35] via-[#E91E63] to-[#9C27B0] text-white font-bold rounded-full hover:scale-110 transition-all duration-300 text-lg shadow-2xl animate-bounce hover:shadow-3xl"
             style={{
               boxShadow: '0 10px 30px rgba(255, 107, 53, 0.3)',
             }}
@@ -241,10 +404,11 @@ const NotFound = () => {
           </Link>
         </div>
 
-        {/* Fun fact */}
-        <div className="mt-8 text-xs text-foreground/50 animate-fade-in">
-          <p>💡 Fun fact: This 404 page has {particles.length} interactive elements!</p>
-          <p>🎮 Try clicking on the floating emojis and the 404 number!</p>
+        {/* Enhanced fun facts */}
+        <div className="mt-8 text-xs text-foreground/50 animate-fade-in space-y-2">
+          <p>💡 Quantum fact: This 404 page has {particles.length} interactive particles in motion!</p>
+          <p>🎮 Try clicking the floating emojis, the 404 number, and explore the quantum playground!</p>
+          <p>🧠 AI Status: {aiThinking ? 'Processing multidimensional data...' : 'Standing by in the void...'}</p>
         </div>
       </div>
     </div>
