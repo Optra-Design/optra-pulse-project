@@ -13,6 +13,7 @@ import Lab from "./pages/Lab";
 import Pulse from "./pages/Pulse";
 import Founder from "./pages/Founder";
 import Blog from "./pages/Blog";
+import Test404 from "./pages/Test404";
 import BackgroundParticles from "./components/BackgroundParticles";
 import OptraBot from "./components/OptraBot";
 import SudoMode from "./components/SudoMode";
@@ -42,6 +43,7 @@ const App = () => (
               <Route path="/pulse" element={<Pulse />} />
               <Route path="/founder" element={<Founder />} />
               <Route path="/blog" element={<Blog />} />
+              <Route path="/test-404" element={<Test404 />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <OptraBot />
