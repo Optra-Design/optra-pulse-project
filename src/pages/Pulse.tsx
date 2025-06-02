@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Navigation from '../components/Navigation';
+import { Progress } from '../components/ui/progress';
 import { Activity, TrendingUp, Zap, BarChart3 } from 'lucide-react';
 
 const Pulse = () => {
@@ -9,6 +10,15 @@ const Pulse = () => {
     clients: 0,
     satisfaction: 0,
     growth: 0
+  });
+
+  const [progressValues, setProgressValues] = useState({
+    projectCompletion: 0,
+    clientRetention: 0,
+    skillDevelopment: 0,
+    marketPresence: 0,
+    teamProductivity: 0,
+    qualityScore: 0
   });
 
   useEffect(() => {
@@ -28,10 +38,36 @@ const Pulse = () => {
       }, 16);
     };
 
+    // Animate progress bars
+    const animateProgress = (key: keyof typeof progressValues, end: number, delay: number = 0) => {
+      setTimeout(() => {
+        const start = 0;
+        const increment = end / (2000 / 16);
+        let current = start;
+        
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= end) {
+            current = end;
+            clearInterval(timer);
+          }
+          setProgressValues(prev => ({ ...prev, [key]: Math.round(current) }));
+        }, 16);
+      }, delay);
+    };
+
     setTimeout(() => animateValue('projects', 47), 200);
     setTimeout(() => animateValue('clients', 23), 400);
     setTimeout(() => animateValue('satisfaction', 100), 600);
     setTimeout(() => animateValue('growth', 250), 800);
+
+    // Animate progress bars with staggered delays
+    setTimeout(() => animateProgress('projectCompletion', 87, 1000), 0);
+    setTimeout(() => animateProgress('clientRetention', 95, 1200), 0);
+    setTimeout(() => animateProgress('skillDevelopment', 78, 1400), 0);
+    setTimeout(() => animateProgress('marketPresence', 82, 1600), 0);
+    setTimeout(() => animateProgress('teamProductivity', 91, 1800), 0);
+    setTimeout(() => animateProgress('qualityScore', 96, 2000), 0);
   }, []);
 
   const pulseData = [
@@ -62,6 +98,45 @@ const Pulse = () => {
       value: metrics.growth,
       suffix: "%",
       color: "text-purple-400"
+    }
+  ];
+
+  const progressData = [
+    {
+      label: "Project Completion Rate",
+      value: progressValues.projectCompletion,
+      color: "from-blue-400 to-blue-600",
+      description: "On-time delivery performance"
+    },
+    {
+      label: "Client Retention",
+      value: progressValues.clientRetention,
+      color: "from-green-400 to-green-600",
+      description: "Long-term client relationships"
+    },
+    {
+      label: "Skill Development",
+      value: progressValues.skillDevelopment,
+      color: "from-purple-400 to-purple-600",
+      description: "Continuous learning and growth"
+    },
+    {
+      label: "Market Presence",
+      value: progressValues.marketPresence,
+      color: "from-orange-400 to-orange-600",
+      description: "Industry recognition and reach"
+    },
+    {
+      label: "Team Productivity",
+      value: progressValues.teamProductivity,
+      color: "from-pink-400 to-pink-600",
+      description: "Efficiency and output quality"
+    },
+    {
+      label: "Quality Score",
+      value: progressValues.qualityScore,
+      color: "from-yellow-400 to-yellow-600",
+      description: "Design and delivery excellence"
     }
   ];
 
@@ -109,6 +184,33 @@ const Pulse = () => {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Progress Metrics */}
+          <div className="glass p-8 rounded-3xl mb-16">
+            <h2 className="text-3xl font-bold text-gradient mb-8 text-center">
+              Performance Metrics
+            </h2>
+            
+            <div className="grid md:grid-cols-2 gap-8">
+              {progressData.map((item, index) => (
+                <div 
+                  key={index} 
+                  className="space-y-3 animate-fade-in"
+                  style={{ animationDelay: `${index * 0.1 + 1}s` }}
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="text-foreground/90 font-medium">{item.label}</span>
+                    <span className="text-gradient font-bold">{item.value}%</span>
+                  </div>
+                  <Progress 
+                    value={item.value} 
+                    className="h-3 bg-white/10 overflow-hidden"
+                  />
+                  <p className="text-sm text-foreground/60">{item.description}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Current Status */}
