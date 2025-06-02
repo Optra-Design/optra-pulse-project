@@ -1,6 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
-import { Settings, Palette, Layout, Zap, LogIn, LogOut, User, Sparkles, Smartphone } from 'lucide-react';
+import { Settings, Palette, Layout, Zap, LogIn, LogOut, User, Sparkles, Smartphone, Bug } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const SudoMode = () => {
   const [isActive, setIsActive] = useState(false);
@@ -11,6 +13,7 @@ const SudoMode = () => {
   const [password, setPassword] = useState('');
   const [touchCount, setTouchCount] = useState(0);
   const { isLoggedIn, login, logout, user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleSudoToggle = () => {
@@ -169,6 +172,27 @@ const SudoMode = () => {
               )}
             </div>
           )}
+        </div>
+
+        <div>
+          <div className="flex items-center gap-2 mb-3">
+            <Bug className="w-5 h-5" />
+            <span className="text-sm font-bold">Developer Tools</span>
+          </div>
+          <div className="space-y-2">
+            <button
+              onClick={() => navigate('/test-404')}
+              className="w-full p-3 text-sm bg-orange-500/20 text-orange-400 rounded-xl hover:bg-orange-500/30 transition-all hover:scale-105 font-semibold"
+            >
+              Test 404 Page
+            </button>
+            <button
+              onClick={() => navigate('/non-existent-route')}
+              className="w-full p-3 text-sm bg-red-500/20 text-red-400 rounded-xl hover:bg-red-500/30 transition-all hover:scale-105 font-semibold"
+            >
+              Trigger Real 404
+            </button>
+          </div>
         </div>
 
         <div>
