@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -14,11 +13,14 @@ import Pulse from "./pages/Pulse";
 import Founder from "./pages/Founder";
 import Blog from "./pages/Blog";
 import Test404 from "./pages/Test404";
+import Minigames from "./pages/Minigames";
 import BackgroundParticles from "./components/BackgroundParticles";
 import OptraBot from "./components/OptraBot";
 import SudoMode from "./components/SudoMode";
 import DynamicGradients from "./components/DynamicGradients";
 import EasterEggs from "./components/EasterEggs";
+import FloatingElements from "./components/FloatingElements";
+import MetaverseHUD from "./components/MetaverseHUD";
 import { AuthProvider } from "./contexts/AuthContext";
 
 const queryClient = new QueryClient();
@@ -33,6 +35,8 @@ const App = () => (
           <div className="relative min-h-screen bg-background overflow-hidden">
             <DynamicGradients />
             <BackgroundParticles />
+            <FloatingElements />
+            <MetaverseHUD />
             <EasterEggs />
             <Routes>
               <Route path="/" element={<Index />} />
@@ -43,6 +47,7 @@ const App = () => (
               <Route path="/pulse" element={<Pulse />} />
               <Route path="/founder" element={<Founder />} />
               <Route path="/blog" element={<Blog />} />
+              <Route path="/minigames" element={<Minigames />} />
               <Route path="/test-404" element={<Test404 />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
