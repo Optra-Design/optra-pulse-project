@@ -5,6 +5,9 @@ import { Beaker, Zap, Palette, Code, Sparkles, Waves, Grid3X3, Triangle, Music, 
 const Lab = () => {
   const [activeExperiment, setActiveExperiment] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [funLevel, setFunLevel] = useState(0);
+  const [labClicks, setLabClicks] = useState(0);
+  const [secretMode, setSecretMode] = useState(false);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -17,58 +20,58 @@ const Lab = () => {
 
   const experiments = [
     {
-      title: "Color Harmonics",
-      description: "Experimental color theory applications",
+      title: "Rainbow Harmonics",
+      description: "Explosive color theory magic ✨",
       icon: <Palette className="w-6 h-6" />,
-      component: <ColorHarmonics />
+      component: <RainbowHarmonics />
     },
     {
-      title: "Motion Studies",
-      description: "Fluid animation explorations",
+      title: "Hypnotic Motion",
+      description: "Mind-bending fluid animations 🌀",
       icon: <Orbit className="w-6 h-6" />,
-      component: <MotionStudies />
+      component: <HypnoticMotion />
     },
     {
-      title: "Typography Lab",
-      description: "Dynamic text transformations",
+      title: "Glitch Typography",
+      description: "Digital text chaos generator 🔥",
       icon: <Code className="w-6 h-6" />,
-      component: <TypographyLab />
+      component: <GlitchTypography />
     },
     {
-      title: "Interactive Particles",
-      description: "Physics-based particle systems",
+      title: "Particle Storm",
+      description: "Interactive physics mayhem ⚡",
       icon: <Atom className="w-6 h-6" />,
-      component: <InteractiveParticles mousePosition={mousePosition} />
+      component: <ParticleStorm mousePosition={mousePosition} />
     },
     {
-      title: "Wave Generator",
-      description: "Audio-visual wave patterns",
+      title: "Bass Wave Generator",
+      description: "Audio-visual earthquake machine 🎵",
       icon: <Waves className="w-6 h-6" />,
-      component: <WaveGenerator />
+      component: <BassWaveGenerator />
     },
     {
-      title: "Grid Morphing",
-      description: "Dynamic grid transformations",
+      title: "Reality Grid",
+      description: "Matrix-bending transformations 🕳️",
       icon: <Grid3X3 className="w-6 h-6" />,
-      component: <GridMorphing />
+      component: <RealityGrid />
     },
     {
-      title: "3D Geometry",
-      description: "Interactive 3D shape experiments",
+      title: "Dimensional Geometry",
+      description: "Impossible 4D shape madness 🔮",
       icon: <Triangle className="w-6 h-6" />,
-      component: <GeometryLab />
+      component: <DimensionalGeometry />
     },
     {
-      title: "Sound Visualizer",
-      description: "Real-time audio visualization",
+      title: "Beat Visualizer",
+      description: "Rave-level audio visualization 🎉",
       icon: <Music className="w-6 h-6" />,
-      component: <SoundVisualizer />
+      component: <BeatVisualizer />
     },
     {
-      title: "Gravity Simulator",
-      description: "Interactive physics playground",
+      title: "Chaos Simulator",
+      description: "Butterfly effect playground 🦋",
       icon: <Gamepad2 className="w-6 h-6" />,
-      component: <GravitySimulator />
+      component: <ChaosSimulator />
     }
   ];
 
@@ -93,106 +96,242 @@ const Lab = () => {
   const handleExperimentChange = (index: number) => {
     setActiveExperiment(index);
     playExperimentSound();
+    setLabClicks(prev => prev + 1);
+    
+    // Secret mode after 10 clicks
+    if (labClicks >= 9) {
+      setSecretMode(true);
+      console.log('🔬 LAB SECRET MODE ACTIVATED! You are now a master scientist! 🧪');
+    }
+    
+    // Add screen shake effect
+    document.body.style.animation = 'shake 0.3s ease-in-out';
+    setTimeout(() => {
+      document.body.style.animation = '';
+    }, 300);
+  };
+
+  const handleLabClick = (e: React.MouseEvent) => {
+    // Create click effect
+    const clickEffect = document.createElement('div');
+    clickEffect.className = 'fixed pointer-events-none z-50 text-2xl animate-ping';
+    clickEffect.innerHTML = '🧪';
+    clickEffect.style.left = e.clientX - 12 + 'px';
+    clickEffect.style.top = e.clientY - 12 + 'px';
+    document.body.appendChild(clickEffect);
+    setTimeout(() => clickEffect.remove(), 1000);
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden" onClick={handleLabClick}>
       <Navigation />
       
-      <div className="pt-24 pb-16 px-4">
+      {/* Enhanced fun background effects */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div 
+          className="absolute w-96 h-96 bg-pink-500/10 rounded-full blur-3xl animate-pulse"
+          style={{
+            left: `${Math.sin(funLevel * 0.1) * 20 + 10}%`,
+            top: `${Math.cos(funLevel * 0.1) * 20 + 10}%`,
+          }}
+        />
+        <div 
+          className="absolute w-64 h-64 bg-blue-500/10 rounded-full blur-3xl animate-bounce"
+          style={{
+            right: `${Math.sin(funLevel * 0.08) * 15 + 5}%`,
+            bottom: `${Math.cos(funLevel * 0.08) * 15 + 5}%`,
+          }}
+        />
+        {secretMode && (
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 animate-pulse" />
+        )}
+      </div>
+      
+      <div className="pt-24 pb-16 px-4 relative z-10">
         <div className="max-w-6xl mx-auto">
-          {/* Hero */}
+          {/* Enhanced Hero with secret mode */}
           <div className="text-center mb-16 animate-fade-in">
             <div className="flex items-center justify-center gap-3 mb-6">
-              <Beaker className="w-12 h-12 text-gradient animate-bounce-subtle" />
-              <h1 className="text-5xl md:text-7xl font-bold text-gradient">
-                Design Lab
+              <Beaker className={`w-12 h-12 text-gradient ${secretMode ? 'animate-spin' : 'animate-bounce'}`} />
+              <h1 className={`text-5xl md:text-7xl font-bold text-gradient ${secretMode ? 'animate-pulse' : ''}`}>
+                {secretMode ? 'SECRET LAB' : 'FUN LAB'}
               </h1>
-              <Sparkles className="w-8 h-8 text-yellow-400 animate-pulse" />
+              <Sparkles className="w-8 h-8 text-yellow-400 animate-bounce" />
             </div>
-            <p className="text-xl text-foreground/70 max-w-2xl mx-auto">
-              🧪 Experimental design concepts and interactive explorations. 
-              A playground for creative innovation and technical artistry.
+            <p className="text-xl text-foreground/70 max-w-2xl mx-auto animate-fade-in">
+              {secretMode ? 
+                '🔬 MASTER SCIENTIST MODE! You\'ve unlocked the lab\'s hidden potential! 🧬' :
+                '🚀 WHERE CREATIVITY MEETS CHAOS! 🎨 Interactive experiments that\'ll blow your mind!'
+              }
             </p>
-            <div className="mt-4 text-sm text-foreground/50">
-              <span className="bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full animate-pulse">
-                ⚠️ Experimental Features
+            <div className="mt-6 flex flex-wrap justify-center gap-4">
+              <span className="bg-pink-500/20 text-pink-400 px-4 py-2 rounded-full animate-pulse font-bold">
+                🔥 MAXIMUM FUN MODE
               </span>
+              <span className="bg-green-500/20 text-green-400 px-4 py-2 rounded-full animate-bounce font-bold">
+                🎮 INTERACTIVE
+              </span>
+              <span className="bg-purple-500/20 text-purple-400 px-4 py-2 rounded-full animate-pulse font-bold">
+                🌈 MIND-BENDING
+              </span>
+              {secretMode && (
+                <span className="bg-cyan-500/20 text-cyan-400 px-4 py-2 rounded-full animate-bounce font-bold">
+                  🔬 SECRET MODE
+                </span>
+              )}
+            </div>
+            <div className="mt-4 text-sm text-foreground/50">
+              Lab Clicks: {labClicks} {labClicks >= 10 && '🏆'}
             </div>
           </div>
 
-          {/* Experiment Navigation */}
+          {/* Interactive experiment navigation */}
           <div className="flex flex-wrap justify-center gap-4 mb-12">
             {experiments.map((experiment, index) => (
               <button
                 key={index}
                 onClick={() => handleExperimentChange(index)}
-                className={`group flex items-center gap-3 px-6 py-3 rounded-full font-medium transition-all duration-300 hover:scale-105 ${
+                onMouseEnter={() => {
+                  // Play hover sound
+                  try {
+                    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.setValueAtTime(600 + index * 50, audioContext.currentTime);
+                    gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.1);
+                  } catch (e) {
+                    console.log('Audio not supported');
+                  }
+                }}
+                className={`group relative flex items-center gap-3 px-6 py-4 rounded-2xl font-bold transition-all duration-300 hover:scale-110 transform ${
                   activeExperiment === index
-                    ? 'bg-optra-gradient text-white scale-105 shadow-lg glow-hover'
-                    : 'bg-white/10 text-foreground/70 hover:bg-white/20 border border-white/20'
-                }`}
+                    ? `bg-gradient-to-r from-pink-500 to-purple-600 text-white scale-110 shadow-2xl ${secretMode ? 'animate-pulse' : ''}`
+                    : 'bg-white/10 text-foreground/70 hover:bg-white/20 border-2 border-white/20 hover:border-white/40'
+                } hover:rotate-1 hover:shadow-2xl`}
+                style={{
+                  filter: activeExperiment === index ? 'drop-shadow(0 0 20px rgba(236, 72, 153, 0.5))' : '',
+                }}
               >
-                <span className="group-hover:rotate-12 transition-transform duration-300">
+                <span className="group-hover:rotate-12 group-hover:scale-125 transition-all duration-300">
                   {experiment.icon}
                 </span>
-                {experiment.title}
+                <span className="relative">
+                  {experiment.title}
+                  {activeExperiment === index && (
+                    <div className="absolute -top-2 -right-2 w-3 h-3 bg-yellow-400 rounded-full animate-ping" />
+                  )}
+                </span>
+                {/* Hidden easter egg */}
+                <div 
+                  className="absolute -bottom-1 -right-1 w-2 h-2 bg-cyan-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    console.log(`🎯 Easter egg found in ${experiment.title}! +50 XP bonus!`);
+                  }}
+                />
               </button>
             ))}
           </div>
 
-          {/* Active Experiment */}
-          <div className="glass p-8 rounded-3xl mb-8 min-h-[500px] hover:glow-hover transition-all duration-300">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gradient mb-2 animate-fade-in">
-                {experiments[activeExperiment].title}
-              </h2>
-              <p className="text-foreground/70">
-                {experiments[activeExperiment].description}
-              </p>
+          {/* Enhanced Active Experiment with interactive elements */}
+          <div className={`glass p-8 rounded-3xl mb-8 min-h-[500px] transition-all duration-500 hover:scale-[1.02] relative overflow-hidden ${secretMode ? 'border-2 border-cyan-400/50' : ''}`}>
+            {/* Interactive background effect */}
+            <div 
+              className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-purple-600/5 transition-opacity duration-300"
+              style={{ 
+                opacity: secretMode ? 0.3 : 0.1,
+                background: secretMode ? 'linear-gradient(45deg, #ff0066, #6600ff, #00ffff)' : undefined
+              }}
+            />
+            
+            {/* Hidden clickable areas */}
+            <div className="absolute top-4 left-4 w-8 h-8 opacity-0 hover:opacity-50 hover:bg-yellow-400/30 rounded-full cursor-pointer transition-all"
+                 onClick={() => console.log('🎯 Secret lab corner discovered! +25 XP!')}>
+            </div>
+            <div className="absolute top-4 right-4 w-8 h-8 opacity-0 hover:opacity-50 hover:bg-green-400/30 rounded-full cursor-pointer transition-all"
+                 onClick={() => console.log('🔬 Lab equipment activated! Science bonus +15 XP!')}>
             </div>
             
-            <div className="flex items-center justify-center h-96">
+            <div className="text-center mb-8 relative z-10">
+              <h2 className="text-4xl font-black text-gradient mb-3 animate-fade-in">
+                {experiments[activeExperiment].title}
+                {secretMode && <span className="text-cyan-400 ml-2">🔬</span>}
+              </h2>
+              <p className="text-lg text-foreground/80 font-medium">
+                {experiments[activeExperiment].description}
+              </p>
+              <div className="mt-4 text-sm text-yellow-400 animate-pulse">
+                ⚡ Click, hover, and explore for hidden surprises! ⚡
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-center h-96 relative z-10">
               {experiments[activeExperiment].component}
             </div>
           </div>
 
-          {/* Lab Info */}
+          {/* Enhanced Lab Info with interactive elements */}
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="glass p-6 rounded-2xl text-center hover:scale-105 transition-transform duration-300 hover:glow-hover animate-fade-in">
-              <Code className="w-8 h-8 text-gradient mx-auto mb-3 animate-pulse" />
-              <h3 className="font-bold text-gradient mb-2">Open Source</h3>
-              <p className="text-sm text-foreground/70">
-                All experiments are built with modern web technologies
+            <div className="glass p-6 rounded-2xl text-center hover:scale-110 transition-all duration-300 hover:rotate-1 animate-fade-in relative overflow-hidden cursor-pointer"
+                 onClick={() => console.log('🔓 Open source magic activated! Knowledge +10 XP!')}>
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 animate-pulse" />
+              <Code className="w-10 h-10 text-gradient mx-auto mb-4 animate-bounce" />
+              <h3 className="font-black text-gradient mb-2 text-lg">OPEN SOURCE</h3>
+              <p className="text-sm text-foreground/70 relative z-10">
+                🔓 Built with cutting-edge web tech magic
               </p>
             </div>
             
-            <div className="glass p-6 rounded-2xl text-center hover:scale-105 transition-transform duration-300 hover:glow-hover animate-fade-in" style={{ animationDelay: '0.1s' }}>
-              <Zap className="w-8 h-8 text-gradient mx-auto mb-3 animate-bounce" />
-              <h3 className="font-bold text-gradient mb-2">Real-time</h3>
-              <p className="text-sm text-foreground/70">
-                Interactive experiences that respond to user input
+            <div className="glass p-6 rounded-2xl text-center hover:scale-110 transition-all duration-300 hover:rotate-1 animate-fade-in relative overflow-hidden cursor-pointer" 
+                 style={{ animationDelay: '0.1s' }}
+                 onClick={() => console.log('⚡ Real-time power unleashed! Speed +20 XP!')}>
+              <div className="absolute inset-0 bg-gradient-to-br from-pink-500/10 to-red-500/10 animate-pulse" />
+              <Zap className="w-10 h-10 text-gradient mx-auto mb-4 animate-pulse" />
+              <h3 className="font-black text-gradient mb-2 text-lg">REAL-TIME</h3>
+              <p className="text-sm text-foreground/70 relative z-10">
+                ⚡ Lightning-fast interactive experiences
               </p>
             </div>
             
-            <div className="glass p-6 rounded-2xl text-center hover:scale-105 transition-transform duration-300 hover:glow-hover animate-fade-in" style={{ animationDelay: '0.2s' }}>
-              <Sparkles className="w-8 h-8 text-gradient mx-auto mb-3 animate-spin" style={{ animationDuration: '3s' }} />
-              <h3 className="font-bold text-gradient mb-2">Innovative</h3>
-              <p className="text-sm text-foreground/70">
-                Pushing boundaries of digital design possibilities
+            <div className="glass p-6 rounded-2xl text-center hover:scale-110 transition-all duration-300 hover:rotate-1 animate-fade-in relative overflow-hidden cursor-pointer" 
+                 style={{ animationDelay: '0.2s' }}
+                 onClick={() => console.log('🤯 Mind-blowing innovation discovered! Creativity +30 XP!')}>
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10 animate-pulse" />
+              <Sparkles className="w-10 h-10 text-gradient mx-auto mb-4 animate-spin" style={{ animationDuration: '2s' }} />
+              <h3 className="font-black text-gradient mb-2 text-lg">MIND-BLOWING</h3>
+              <p className="text-sm text-foreground/70 relative z-10">
+                🤯 Pushing reality's boundaries daily
               </p>
             </div>
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          25% { transform: translateX(-2px) rotate(-0.5deg); }
+          75% { transform: translateX(2px) rotate(0.5deg); }
+        }
+      `}</style>
     </div>
   );
 };
 
-// Enhanced Experiment Components
-const ColorHarmonics = () => {
+// Enhanced Experiment Components with more interactivity
+const RainbowHarmonics = () => {
   const [hue, setHue] = useState(0);
   const [pattern, setPattern] = useState(0);
+  const [clicked, setClicked] = useState<number[]>([]);
+  const [explosions, setExplosions] = useState<Array<{id: number, x: number, y: number}>>([]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -202,60 +341,146 @@ const ColorHarmonics = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const handleColorClick = (index: number, event: React.MouseEvent) => {
+    setClicked(prev => [...prev, index]);
+    
+    // Create explosion effect
+    const rect = (event.target as HTMLElement).getBoundingClientRect();
+    const explosion = {
+      id: Date.now() + index,
+      x: rect.left + rect.width / 2,
+      y: rect.top + rect.height / 2
+    };
+    setExplosions(prev => [...prev, explosion]);
+    
+    setTimeout(() => {
+      setClicked(prev => prev.filter(i => i !== index));
+      setExplosions(prev => prev.filter(e => e.id !== explosion.id));
+    }, 800);
+
+    // Play color sound
+    try {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      oscillator.frequency.setValueAtTime(200 + index * 50, audioContext.currentTime);
+      gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+      
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 0.3);
+    } catch (e) {
+      console.log('Audio not supported');
+    }
+  };
+
   return (
-    <div className="w-full h-full flex items-center justify-center">
-      <div className="grid grid-cols-5 gap-4">
-        {Array.from({ length: 25 }, (_, i) => (
+    <>
+      <div className="w-full h-full flex items-center justify-center">
+        <div className="grid grid-cols-6 gap-3 p-4">
+          {Array.from({ length: 36 }, (_, i) => (
+            <div
+              key={i}
+              className="w-14 h-14 rounded-xl transition-all duration-300 hover:scale-125 cursor-pointer shadow-2xl relative overflow-hidden"
+              onClick={(e) => handleColorClick(i, e)}
+              style={{
+                backgroundColor: `hsl(${(hue + i * 10) % 360}, ${80 + Math.sin(pattern + i) * 20}%, ${60 + Math.cos(pattern + i) * 15}%)`,
+                transform: `rotate(${hue + i * 3}deg) scale(${clicked.includes(i) ? 1.5 : 1 + Math.sin(pattern + i) * 0.2})`,
+                boxShadow: `0 0 30px hsla(${(hue + i * 10) % 360}, 80%, 60%, 0.8)`,
+                filter: clicked.includes(i) ? 'brightness(1.5) saturate(2)' : '',
+              }}
+            >
+              {clicked.includes(i) && (
+                <div className="absolute inset-0 bg-white/50 animate-ping rounded-xl" />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+      
+      {/* Explosion effects */}
+      {explosions.map(explosion => (
+        <div
+          key={explosion.id}
+          className="fixed pointer-events-none z-50 text-4xl animate-ping"
+          style={{
+            left: explosion.x - 20,
+            top: explosion.y - 20,
+          }}
+        >
+          💥
+        </div>
+      ))}
+    </>
+  );
+};
+
+const HypnoticMotion = () => {
+  const [time, setTime] = useState(0);
+  const [speed, setSpeed] = useState(1);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(prev => prev + 0.15 * speed);
+    }, 30);
+    return () => clearInterval(interval);
+  }, [speed]);
+
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center relative">
+      <div className="relative mb-4">
+        {Array.from({ length: 12 }, (_, i) => (
           <div
             key={i}
-            className="w-12 h-12 rounded-lg transition-all duration-1000 hover:scale-110 cursor-pointer shadow-lg"
+            className="absolute border-4 rounded-full animate-pulse"
             style={{
-              backgroundColor: `hsl(${(hue + i * 15) % 360}, ${70 + Math.sin(pattern + i) * 20}%, ${60 + Math.cos(pattern + i) * 10}%)`,
-              transform: `rotate(${hue + i * 5}deg) scale(${1 + Math.sin(pattern + i) * 0.1})`,
-              boxShadow: `0 0 20px hsla(${(hue + i * 15) % 360}, 70%, 60%, 0.5)`
+              width: `${80 + i * 25}px`,
+              height: `${80 + i * 25}px`,
+              left: '50%',
+              top: '50%',
+              transform: `translate(-50%, -50%) rotate(${time * (i + 1) * 8}deg) scale(${1 + Math.sin(time + i) * 0.4})`,
+              opacity: 0.9 - i * 0.06,
+              borderColor: `hsl(${(time * 30 + i * 30) % 360}, 90%, 70%)`,
+              filter: `drop-shadow(0 0 15px hsla(${(time * 30 + i * 30) % 360}, 90%, 70%, 0.8)) blur(${i * 0.5}px)`,
+              mixBlendMode: 'screen'
             }}
           />
         ))}
+        <div 
+          className="w-12 h-12 bg-white rounded-full absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 shadow-2xl animate-pulse z-10"
+          style={{
+            boxShadow: '0 0 30px rgba(255, 255, 255, 0.8)'
+          }}
+        />
+      </div>
+      
+      <div className="flex gap-4 z-20">
+        <button
+          onClick={() => setSpeed(prev => Math.max(0.1, prev - 0.5))}
+          className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-bold"
+        >
+          SLOWER 🐌
+        </button>
+        <button
+          onClick={() => setSpeed(prev => Math.min(3, prev + 0.5))}
+          className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors font-bold"
+        >
+          FASTER 🚀
+        </button>
       </div>
     </div>
   );
 };
 
-const MotionStudies = () => {
-  const [time, setTime] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(prev => prev + 0.1);
-    }, 50);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div className="w-full h-full flex items-center justify-center relative">
-      {Array.from({ length: 8 }, (_, i) => (
-        <div
-          key={i}
-          className="absolute border-2 border-gradient rounded-full animate-pulse"
-          style={{
-            width: `${60 + i * 30}px`,
-            height: `${60 + i * 30}px`,
-            transform: `rotate(${time * (i + 1) * 15}deg) scale(${1 + Math.sin(time + i) * 0.3})`,
-            opacity: 0.8 - i * 0.08,
-            borderColor: `hsl(${(time * 50 + i * 45) % 360}, 80%, 65%)`,
-            filter: `drop-shadow(0 0 10px hsla(${(time * 50 + i * 45) % 360}, 80%, 65%, 0.7))`
-          }}
-        />
-      ))}
-      <div className="w-8 h-8 bg-optra-gradient rounded-full animate-bounce-subtle shadow-lg" />
-    </div>
-  );
-};
-
-const TypographyLab = () => {
+const GlitchTypography = () => {
   const [currentText, setCurrentText] = useState(0);
   const [glitch, setGlitch] = useState(false);
-  const texts = ['OPTRA', 'DESIGN', 'LAB', 'EXPERIMENT', 'CREATE', 'INNOVATE', 'FUTURE', 'PIXEL'];
+  const [intensity, setIntensity] = useState(1);
+  const texts = ['CHAOS', 'GLITCH', 'MATRIX', 'CYBER', 'NEON', 'FUTURE', 'DIGITAL', 'HACK'];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -263,32 +488,48 @@ const TypographyLab = () => {
       setTimeout(() => {
         setCurrentText(prev => (prev + 1) % texts.length);
         setGlitch(false);
-      }, 200);
-    }, 1500);
+      }, 300);
+    }, 1200);
     return () => clearInterval(interval);
   }, []);
 
+  const glitchStyle = {
+    textShadow: glitch ? `${intensity * 3}px ${intensity * 3}px 0px #ff0000, -${intensity * 3}px -${intensity * 3}px 0px #00ff00, ${intensity * 2}px -${intensity * 2}px 0px #0000ff` : '0 0 40px rgba(255, 107, 53, 0.8)',
+    transform: glitch ? `skew(${intensity * 2}deg) scale(${1 + intensity * 0.1})` : 'skew(0deg) scale(1)',
+    filter: glitch ? `hue-rotate(${intensity * 90}deg) contrast(${1 + intensity * 0.5})` : 'none',
+  };
+
   return (
-    <div className="w-full h-full flex items-center justify-center">
+    <div className="w-full h-full flex flex-col items-center justify-center gap-6">
       <div 
-        className={`text-6xl font-black text-gradient transition-all duration-200 ${
-          glitch ? 'animate-pulse filter blur-sm scale-110' : 'hover:scale-105'
+        className={`text-6xl font-black text-gradient transition-all duration-200 cursor-pointer hover:scale-110 ${
+          glitch ? 'animate-pulse' : ''
         }`}
-        style={{
-          textShadow: glitch ? '3px 3px 0px #ff0000, -3px -3px 0px #00ff00, 2px -2px 0px #0000ff' : '0 0 30px rgba(255, 107, 53, 0.5)',
-          background: glitch ? 'linear-gradient(45deg, #ff0000, #00ff00, #0000ff)' : undefined,
-          WebkitBackgroundClip: glitch ? 'text' : undefined,
-          backgroundClip: glitch ? 'text' : undefined,
-          WebkitTextFillColor: glitch ? 'transparent' : undefined
-        }}
+        style={glitchStyle}
+        onClick={() => setGlitch(!glitch)}
       >
         {texts[currentText]}
+      </div>
+      
+      <div className="flex gap-4">
+        <button
+          onClick={() => setIntensity(prev => Math.max(0.5, prev - 0.5))}
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-bold"
+        >
+          LESS CHAOS 😌
+        </button>
+        <button
+          onClick={() => setIntensity(prev => Math.min(3, prev + 0.5))}
+          className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-bold"
+        >
+          MORE CHAOS 🔥
+        </button>
       </div>
     </div>
   );
 };
 
-const InteractiveParticles = ({ mousePosition }: { mousePosition: { x: number; y: number } }) => {
+const ParticleStorm = ({ mousePosition }: { mousePosition: { x: number; y: number } }) => {
   const [particles, setParticles] = useState<Array<{ id: number; x: number; y: number; vx: number; vy: number; size: number; color: string }>>([]);
 
   useEffect(() => {
@@ -355,7 +596,7 @@ const InteractiveParticles = ({ mousePosition }: { mousePosition: { x: number; y
   );
 };
 
-const WaveGenerator = () => {
+const BassWaveGenerator = () => {
   const [frequency, setFrequency] = useState(1);
   const [amplitude, setAmplitude] = useState(50);
   const [time, setTime] = useState(0);
@@ -426,7 +667,7 @@ const WaveGenerator = () => {
   );
 };
 
-const GridMorphing = () => {
+const RealityGrid = () => {
   const [morph, setMorph] = useState(0);
 
   useEffect(() => {
@@ -465,7 +706,7 @@ const GridMorphing = () => {
   );
 };
 
-const GeometryLab = () => {
+const DimensionalGeometry = () => {
   const [rotation, setRotation] = useState(0);
 
   useEffect(() => {
@@ -508,8 +749,7 @@ const GeometryLab = () => {
   );
 };
 
-// NEW EXPERIMENTS
-const SoundVisualizer = () => {
+const BeatVisualizer = () => {
   const [bars, setBars] = useState<number[]>(Array.from({ length: 20 }, () => Math.random() * 100));
 
   useEffect(() => {
@@ -538,7 +778,7 @@ const SoundVisualizer = () => {
   );
 };
 
-const GravitySimulator = () => {
+const ChaosSimulator = () => {
   const [balls, setBalls] = useState<Array<{ x: number; y: number; vx: number; vy: number; color: string }>>([]);
   
   useEffect(() => {
@@ -598,3 +838,5 @@ const GravitySimulator = () => {
 };
 
 export default Lab;
+
+</edits_to_apply>
