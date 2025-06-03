@@ -14,11 +14,130 @@ const NotFound = () => {
   const [matrixRain, setMatrixRain] = useState<Array<{ id: number; x: number; y: number; speed: number; char: string }>>([]);
   const [aiThinking, setAiThinking] = useState(false);
 
+  // Sound Effects
+  const playGlitchSound = () => {
+    try {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      oscillator.type = 'sawtooth';
+      oscillator.frequency.setValueAtTime(100, audioContext.currentTime);
+      oscillator.frequency.exponentialRampToValueAtTime(1000, audioContext.currentTime + 0.1);
+      oscillator.frequency.exponentialRampToValueAtTime(50, audioContext.currentTime + 0.3);
+      
+      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+      
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 0.3);
+    } catch (e) {
+      console.log('Audio not supported');
+    }
+  };
+
+  const playExplosionSound = () => {
+    try {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      oscillator.type = 'square';
+      oscillator.frequency.setValueAtTime(150, audioContext.currentTime);
+      oscillator.frequency.exponentialRampToValueAtTime(30, audioContext.currentTime + 0.5);
+      
+      gainNode.gain.setValueAtTime(0.4, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+      
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 0.5);
+    } catch (e) {
+      console.log('Audio not supported');
+    }
+  };
+
+  const playMagicSound = () => {
+    try {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const notes = [523, 659, 784, 1047, 1319]; // C, E, G, C, E
+      notes.forEach((freq, i) => {
+        setTimeout(() => {
+          const oscillator = audioContext.createOscillator();
+          const gainNode = audioContext.createGain();
+          
+          oscillator.connect(gainNode);
+          gainNode.connect(audioContext.destination);
+          
+          oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+          gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+          
+          oscillator.start(audioContext.currentTime);
+          oscillator.stop(audioContext.currentTime + 0.3);
+        }, i * 80);
+      });
+    } catch (e) {
+      console.log('Audio not supported');
+    }
+  };
+
+  const playWhooshSound = () => {
+    try {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+      oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.6);
+      
+      gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.6);
+      
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 0.6);
+    } catch (e) {
+      console.log('Audio not supported');
+    }
+  };
+
+  const playClickSound = () => {
+    try {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+      gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+      
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 0.1);
+    } catch (e) {
+      console.log('Audio not supported');
+    }
+  };
+
   useEffect(() => {
     console.error(
       "🚨 404 Error: User attempted to access non-existent route:",
       location.pathname
     );
+
+    // Play initial error sound
+    playGlitchSound();
 
     // Enhanced glitch effect for 404 text
     const glitchInterval = setInterval(() => {
@@ -119,11 +238,13 @@ const NotFound = () => {
   ];
 
   const handleSecretClick = () => {
+    playClickSound();
     setSecretClicks(prev => prev + 1);
     if (secretClicks >= 4) {
       setShowSecret(true);
       setSecretClicks(0);
       setAiThinking(true);
+      playMagicSound();
       
       // AI thinking simulation
       setTimeout(() => {
@@ -139,6 +260,7 @@ const NotFound = () => {
   };
 
   const generateExplosion = (x: number, y: number) => {
+    playExplosionSound();
     const newParticles = Array.from({ length: 15 }, (_, i) => ({
       id: Date.now() + i,
       x,
@@ -153,6 +275,7 @@ const NotFound = () => {
   };
 
   const triggerGlobalGlitch = () => {
+    playGlitchSound();
     document.body.style.animation = 'glitch 0.5s ease-in-out';
     document.body.style.filter = 'contrast(200%) brightness(150%)';
     setTimeout(() => {
@@ -261,6 +384,7 @@ const NotFound = () => {
           <div className="flex flex-wrap justify-center gap-4 mt-6">
             <button
               onClick={() => {
+                playWhooshSound();
                 setShakeIntensity(1);
                 setTimeout(() => setShakeIntensity(0), 1000);
               }}
@@ -271,7 +395,10 @@ const NotFound = () => {
             </button>
             
             <button
-              onClick={triggerGlobalGlitch}
+              onClick={() => {
+                triggerGlobalGlitch();
+                playGlitchSound();
+              }}
               className="px-4 py-2 bg-purple-500/20 text-purple-400 rounded-full hover:bg-purple-500/30 transition-all hover:scale-110"
             >
               <Sparkles className="w-4 h-4 inline mr-2" />
@@ -280,6 +407,7 @@ const NotFound = () => {
 
             <button
               onClick={() => {
+                playMagicSound();
                 setMatrixRain(prev => [...prev, ...Array.from({ length: 30 }, (_, i) => ({
                   id: Date.now() + i,
                   x: Math.random() * window.innerWidth,
@@ -309,7 +437,10 @@ const NotFound = () => {
                 to={suggestion.path}
                 className="group p-6 glass rounded-2xl hover:bg-white/20 transition-all duration-500 animate-fade-in hover:scale-110 hover:rotate-2 hover:shadow-2xl"
                 style={{ animationDelay: `${index * 0.2}s` }}
-                onMouseEnter={(e) => generateExplosion(e.clientX, e.clientY)}
+                onMouseEnter={(e) => {
+                  generateExplosion(e.clientX, e.clientY);
+                  playClickSound();
+                }}
               >
                 <div className="text-gradient mb-3 group-hover:scale-125 transition-transform duration-300 group-hover:animate-spin">
                   {suggestion.icon}
@@ -331,6 +462,7 @@ const NotFound = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <button
                 onClick={() => {
+                  playMagicSound();
                   document.querySelectorAll('.glass').forEach(el => {
                     (el as HTMLElement).style.animation = 'glow 1s ease-in-out';
                     (el as HTMLElement).style.boxShadow = '0 0 50px rgba(255, 107, 53, 0.8)';
@@ -348,6 +480,7 @@ const NotFound = () => {
               
               <button
                 onClick={() => {
+                  playExplosionSound();
                   const newParticles = Array.from({ length: 50 }, (_, i) => ({
                     id: Date.now() + i,
                     x: window.innerWidth / 2,
@@ -366,6 +499,7 @@ const NotFound = () => {
               
               <button
                 onClick={() => {
+                  playWhooshSound();
                   document.body.style.animation = 'pulse 2s ease-in-out';
                   document.body.style.background = 'radial-gradient(circle, rgba(255,107,53,0.1) 0%, rgba(0,0,0,1) 100%)';
                   setTimeout(() => {
@@ -397,6 +531,7 @@ const NotFound = () => {
             style={{
               boxShadow: '0 10px 30px rgba(255, 107, 53, 0.3)',
             }}
+            onClick={() => playMagicSound()}
           >
             <Home className="w-6 h-6" />
             Return to Reality
@@ -409,6 +544,7 @@ const NotFound = () => {
           <p>💡 Quantum fact: This 404 page has {particles.length} interactive particles in motion!</p>
           <p>🎮 Try clicking the floating emojis, the 404 number, and explore the quantum playground!</p>
           <p>🧠 AI Status: {aiThinking ? 'Processing multidimensional data...' : 'Standing by in the void...'}</p>
+          <p>🔊 Sound Effects: {typeof window !== 'undefined' && (window.AudioContext || (window as any).webkitAudioContext) ? 'Enabled' : 'Not supported'}</p>
         </div>
       </div>
     </div>
