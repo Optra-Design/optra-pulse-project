@@ -15,8 +15,8 @@ const AnimatedHeroText = () => {
       setTimeout(() => {
         setCurrentWordIndex((prev) => (prev + 1) % descriptors.length);
         setIsAnimating(false);
-      }, 400);
-    }, 3500);
+      }, 200); // Faster transition - reduced from 400ms to 200ms
+    }, 2000); // Faster cycle - reduced from 3500ms to 2000ms
 
     return () => clearInterval(interval);
   }, []);
@@ -27,8 +27,8 @@ const AnimatedHeroText = () => {
         <div className="text-6xl md:text-7xl lg:text-8xl font-light leading-none tracking-tight">
           <div className="relative inline-block">
             <span 
-              className={`text-gradient-accent transition-all duration-500 ${
-                isAnimating ? 'opacity-0 transform translate-y-3' : 'opacity-100 transform translate-y-0'
+              className={`text-gradient-accent transition-all duration-300 ${
+                isAnimating ? 'opacity-0 transform translate-y-2' : 'opacity-100 transform translate-y-0'
               }`}
             >
               {descriptors[currentWordIndex]}

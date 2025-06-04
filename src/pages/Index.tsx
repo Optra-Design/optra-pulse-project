@@ -171,8 +171,8 @@ const Index = () => {
                     <div className="w-2 h-2 rounded-full bg-zinc-500" />
                   </div>
                   <div>
-                    <h4 className="text-white font-medium mb-1">Enterprise Rebrand</h4>
-                    <p className="text-zinc-400 text-sm">Complete visual identity overhaul resulting in 40% increase in brand recognition</p>
+                    <h4 className="text-white font-medium mb-1">Shriniketana School</h4>
+                    <p className="text-zinc-400 text-sm">Complete brand identity and digital presence for educational institution</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -180,8 +180,22 @@ const Index = () => {
                     <div className="w-2 h-2 rounded-full bg-zinc-500" />
                   </div>
                   <div>
-                    <h4 className="text-white font-medium mb-1">SaaS Platform Design</h4>
-                    <p className="text-zinc-400 text-sm">User experience redesign that improved conversion rates by 65%</p>
+                    <h4 className="text-white font-medium mb-1">Nyve Design</h4>
+                    <p className="text-zinc-400 text-sm">
+                      Creative design studio platform - 
+                      <a href="https://www.nyvedesign.com" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 transition-colors ml-1">
+                        www.nyvedesign.com
+                      </a>
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="w-6 h-6 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center mt-1">
+                    <div className="w-2 h-2 rounded-full bg-zinc-500" />
+                  </div>
+                  <div>
+                    <h4 className="text-white font-medium mb-1">Enterprise Rebrand</h4>
+                    <p className="text-zinc-400 text-sm">Complete visual identity overhaul resulting in 40% increase in brand recognition</p>
                   </div>
                 </div>
               </div>
@@ -190,10 +204,28 @@ const Index = () => {
             <div className="relative">
               <div className="aspect-square bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-zinc-800/50 to-zinc-900/50" />
-                <div className="absolute inset-6 border border-zinc-700 rounded-lg" />
-                <div className="absolute top-8 left-8 w-16 h-16 bg-zinc-700 rounded-lg" />
-                <div className="absolute bottom-8 right-8 w-24 h-2 bg-zinc-700 rounded-full" />
-                <div className="absolute bottom-12 right-8 w-16 h-2 bg-zinc-800 rounded-full" />
+                
+                {/* Nyve Design Screenshot Mockup */}
+                <div className="absolute inset-4 bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg border border-zinc-700 overflow-hidden">
+                  <div className="h-8 bg-zinc-800 border-b border-zinc-700 flex items-center px-4">
+                    <div className="flex gap-2">
+                      <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                      <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                      <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                    </div>
+                    <div className="ml-4 text-xs text-zinc-400">nyvedesign.com</div>
+                  </div>
+                  <div className="p-6 space-y-4">
+                    <div className="h-4 bg-gradient-to-r from-orange-400 to-pink-400 rounded w-32"></div>
+                    <div className="h-2 bg-zinc-600 rounded w-full"></div>
+                    <div className="h-2 bg-zinc-700 rounded w-3/4"></div>
+                    <div className="grid grid-cols-2 gap-4 mt-6">
+                      <div className="h-16 bg-zinc-700 rounded"></div>
+                      <div className="h-16 bg-zinc-700 rounded"></div>
+                    </div>
+                    <div className="h-8 bg-gradient-to-r from-purple-400 to-blue-400 rounded w-24 mt-4"></div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
