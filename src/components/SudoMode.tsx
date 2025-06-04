@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Settings, Palette, Layout, Zap, LogIn, LogOut, User, Sparkles, Smartphone, Bug, Minimize2, Maximize2, Volume2, VolumeX, Gamepad2, Wand2, Rainbow } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
@@ -162,13 +161,14 @@ const SudoMode = () => {
 
   const themes = [
     { id: 'default', name: 'Optra', class: '', emoji: '🎨' },
-    { id: 'neon', name: 'Neon', class: 'filter hue-rotate-90 saturate-200 brightness-110', emoji: '⚡' },
-    { id: 'retro', name: 'Retro', class: 'filter sepia(0.7) hue-rotate(290deg) saturate(150)', emoji: '📺' },
-    { id: 'cyberpunk', name: 'Cyber', class: 'filter hue-rotate(180deg) saturate-200 contrast-125', emoji: '🤖' },
-    { id: 'mono', name: 'Mono', class: 'filter grayscale contrast-125 brightness-110', emoji: '⚫' },
-    { id: 'vibrant', name: 'Ultra', class: 'filter saturate-300 brightness-125 contrast-110', emoji: '🌈' },
-    { id: 'matrix', name: 'Matrix', class: 'filter hue-rotate-90deg saturate-150 brightness-90', emoji: '💊' },
-    { id: 'synthwave', name: 'Synth', class: 'filter hue-rotate-270deg saturate-200 contrast-120', emoji: '🌆' }
+    { id: 'classic-optra', name: 'Classic', class: 'optra-classic-theme', emoji: '🏛️' },
+    { id: 'neon', name: 'Neon', class: 'neon-theme', emoji: '⚡' },
+    { id: 'retro', name: 'Retro', class: 'retro-theme', emoji: '📺' },
+    { id: 'cyberpunk', name: 'Cyber', class: 'cyberpunk-theme', emoji: '🤖' },
+    { id: 'mono', name: 'Mono', class: 'mono-theme', emoji: '⚫' },
+    { id: 'vibrant', name: 'Ultra', class: 'vibrant-theme', emoji: '🌈' },
+    { id: 'matrix', name: 'Matrix', class: 'matrix-theme', emoji: '💊' },
+    { id: 'synthwave', name: 'Synth', class: 'synthwave-theme', emoji: '🌆' }
   ];
 
   const layouts = [
@@ -181,9 +181,20 @@ const SudoMode = () => {
   const applyTheme = (themeId: string) => {
     const themeObj = themes.find(t => t.id === themeId);
     if (themeObj) {
-      document.body.className = themeObj.class;
+      // Remove all theme classes
+      document.body.classList.remove(
+        'optra-classic-theme', 'neon-theme', 'retro-theme', 'cyberpunk-theme', 
+        'mono-theme', 'vibrant-theme', 'matrix-theme', 'synthwave-theme'
+      );
+      
+      // Apply new theme
+      if (themeObj.class) {
+        document.body.classList.add(themeObj.class);
+      }
+      
       setTheme(themeId);
       playClickSound();
+      console.log(`🎨 Theme changed to: ${themeObj.name}`);
     }
   };
 
