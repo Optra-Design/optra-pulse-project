@@ -1,8 +1,9 @@
+
 import React, { useEffect } from 'react';
 import Navigation from '../components/Navigation';
 import AnimatedHeroText from '../components/AnimatedHeroText';
 import SecretSudoButton from '../components/SecretSudoButton';
-import { ArrowRight, Sparkles, Zap, Palette, Users } from 'lucide-react';
+import { ArrowRight, Eye, Code2, Layers } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Index = () => {
@@ -64,114 +65,177 @@ const Index = () => {
     };
   }, []);
 
-  const features = [
+  const capabilities = [
     {
-      icon: <Palette className="w-8 h-8" />,
-      title: "Brand Identity",
-      description: "Distinctive visual systems that capture essence and drive recognition."
+      icon: <Eye className="w-7 h-7" />,
+      title: "Visual Identity",
+      description: "Comprehensive brand systems that capture essence and drive market recognition through strategic design."
     },
     {
-      icon: <Zap className="w-8 h-8" />,
-      title: "Digital Experiences",
-      description: "Interactive interfaces that engage, delight, and convert users."
+      icon: <Code2 className="w-7 h-7" />,
+      title: "Digital Products",
+      description: "User-centered interfaces and interactions that convert visitors into customers through thoughtful UX."
     },
     {
-      icon: <Sparkles className="w-8 h-8" />,
-      title: "Creative Direction",
-      description: "Strategic vision that aligns creativity with business objectives."
-    },
-    {
-      icon: <Users className="w-8 h-8" />,
-      title: "Consultation",
-      description: "Expert guidance to elevate your design and brand strategy."
+      icon: <Layers className="w-7 h-7" />,
+      title: "Creative Strategy",
+      description: "Data-driven creative direction that aligns design decisions with measurable business outcomes."
     }
   ];
 
   return (
-    <div className="min-h-screen relative">
+    <div className="min-h-screen relative bg-zinc-950">
       <Navigation />
       <SecretSudoButton />
       
       {/* Hero Section */}
-      <section className="min-h-screen flex items-center justify-center px-4 relative">
+      <section className="min-h-screen flex items-center justify-center px-6 relative">
+        {/* Subtle grid pattern */}
+        <div className="absolute inset-0 opacity-[0.03]">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `
+              linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
+            `,
+            backgroundSize: '24px 24px'
+          }} />
+        </div>
+        
         <AnimatedHeroText />
         
-        {/* Caution Button - Hidden Easter Egg */}
-        <Link 
-          to="/404" 
-          className="absolute bottom-8 right-8 opacity-10 hover:opacity-100 transition-opacity duration-300 text-xs text-foreground/50 hover:text-gradient"
-          aria-label="Hidden easter egg"
-        >
-          ⚠️
-        </Link>
+        {/* Minimal accent element */}
+        <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2">
+          <div className="w-px h-16 bg-gradient-to-b from-zinc-600 to-transparent" />
+        </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-24 px-4 relative">
+      {/* Capabilities Section */}
+      <section className="py-32 px-6 relative">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-6xl font-bold text-gradient mb-6">
-              Crafted by Aniketh
+          <div className="mb-20">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-8 h-px bg-gradient-to-r from-zinc-600 to-transparent" />
+              <span className="text-sm font-medium text-zinc-400 tracking-wider uppercase">Capabilities</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-light text-white leading-tight mb-6 max-w-3xl">
+              Precision-crafted solutions that bridge the gap between 
+              <span className="font-medium italic text-zinc-300"> vision and reality</span>
             </h2>
-            <p className="text-xl text-foreground/70 max-w-3xl mx-auto">
-              Every pixel purposeful. Every interaction intentional. 
-              Every design decision driven by passion and innovation from Bangalore's premier design studio.
-            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => (
+          <div className="grid lg:grid-cols-3 gap-12 lg:gap-16">
+            {capabilities.map((capability, index) => (
               <div 
                 key={index}
-                className="group p-8 glass rounded-2xl hover:bg-white/10 transition-all duration-500 glow-hover animate-fade-in cursor-pointer"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                className="group"
+                style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className="text-gradient mb-4 group-hover:scale-110 transition-transform duration-300">
-                  {feature.icon}
+                <div className="flex items-start gap-4 mb-6">
+                  <div className="p-3 bg-zinc-900 border border-zinc-800 rounded-lg group-hover:border-zinc-700 transition-colors">
+                    <div className="text-zinc-400 group-hover:text-zinc-300 transition-colors">
+                      {capability.icon}
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-medium text-white mb-3 group-hover:text-zinc-200 transition-colors">
+                      {capability.title}
+                    </h3>
+                    <p className="text-zinc-400 leading-relaxed text-sm">
+                      {capability.description}
+                    </p>
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold mb-3 text-foreground group-hover:text-gradient transition-colors duration-300">
-                  {feature.title}
-                </h3>
-                <p className="text-foreground/70 leading-relaxed">
-                  {feature.description}
-                </p>
+                <div className="h-px bg-gradient-to-r from-zinc-800 to-transparent group-hover:from-zinc-700 transition-colors" />
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 px-4 relative">
-        <div className="max-w-4xl mx-auto text-center glass p-12 rounded-3xl glow-hover">
-          <h2 className="text-4xl md:text-5xl font-bold text-gradient mb-6">
-            Ready to Transform?
+      {/* Work Preview Section */}
+      <section className="py-32 px-6 relative">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-20 items-center">
+            <div>
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-8 h-px bg-gradient-to-r from-zinc-600 to-transparent" />
+                <span className="text-sm font-medium text-zinc-400 tracking-wider uppercase">Recent Work</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-light text-white leading-tight mb-8">
+                Projects that demonstrate our commitment to 
+                <span className="font-medium italic text-zinc-300"> exceptional craft</span>
+              </h2>
+              <div className="space-y-6 mb-10">
+                <div className="flex items-start gap-4">
+                  <div className="w-6 h-6 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center mt-1">
+                    <div className="w-2 h-2 rounded-full bg-zinc-500" />
+                  </div>
+                  <div>
+                    <h4 className="text-white font-medium mb-1">Enterprise Rebrand</h4>
+                    <p className="text-zinc-400 text-sm">Complete visual identity overhaul resulting in 40% increase in brand recognition</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="w-6 h-6 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center mt-1">
+                    <div className="w-2 h-2 rounded-full bg-zinc-500" />
+                  </div>
+                  <div>
+                    <h4 className="text-white font-medium mb-1">SaaS Platform Design</h4>
+                    <p className="text-zinc-400 text-sm">User experience redesign that improved conversion rates by 65%</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="relative">
+              <div className="aspect-square bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-zinc-800/50 to-zinc-900/50" />
+                <div className="absolute inset-6 border border-zinc-700 rounded-lg" />
+                <div className="absolute top-8 left-8 w-16 h-16 bg-zinc-700 rounded-lg" />
+                <div className="absolute bottom-8 right-8 w-24 h-2 bg-zinc-700 rounded-full" />
+                <div className="absolute bottom-12 right-8 w-16 h-2 bg-zinc-800 rounded-full" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section className="py-32 px-6 relative border-t border-zinc-900">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="flex items-center justify-center gap-3 mb-8">
+            <div className="w-8 h-px bg-gradient-to-r from-transparent via-zinc-600 to-transparent" />
+            <span className="text-sm font-medium text-zinc-400 tracking-wider uppercase">Get Started</span>
+            <div className="w-8 h-px bg-gradient-to-r from-transparent via-zinc-600 to-transparent" />
+          </div>
+          
+          <h2 className="text-4xl md:text-5xl font-light text-white leading-tight mb-8">
+            Ready to elevate your brand?
           </h2>
-          <p className="text-xl text-foreground/70 mb-8 max-w-2xl mx-auto">
-            Let's create something extraordinary together with Aniketh. 
-            Premium design solutions that elevate your brand and captivate your audience.
+          <p className="text-zinc-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+            Let's discuss how we can transform your vision into a compelling digital presence that drives results.
           </p>
           
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
             <Link 
               to="/contact"
-              className="group flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#FF6B35] via-[#E91E63] to-[#9C27B0] text-white font-semibold rounded-full transition-all duration-300 hover:scale-105 glow-hover"
+              className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-zinc-950 font-medium rounded-lg transition-all duration-200 hover:bg-zinc-100"
             >
-              Get Started
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+              Start a Project
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
             </Link>
             
             <Link 
-              to="/blog"
-              className="px-8 py-4 border border-white/20 text-foreground font-semibold rounded-full hover:bg-white/5 transition-all duration-300 hover:border-white/40 hover:text-gradient"
+              to="/services"
+              className="inline-flex items-center gap-3 px-8 py-4 border border-zinc-800 text-zinc-300 font-medium rounded-lg transition-all duration-200 hover:border-zinc-700 hover:text-white"
             >
-              Read the Blog
+              View Services
             </Link>
           </div>
 
-          <div className="mt-12 pt-8 border-t border-white/10">
-            <p className="text-sm text-foreground/50">
-              Founded by Aniketh in Bangalore • Response within 48 hours • Premium quality guaranteed
+          <div className="mt-16 pt-8 border-t border-zinc-900">
+            <p className="text-sm text-zinc-500">
+              Aniketh • Bangalore • Response within 24 hours
             </p>
           </div>
         </div>
