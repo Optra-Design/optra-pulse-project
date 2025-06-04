@@ -14,15 +14,15 @@ const BackgroundParticles = () => {
   
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-  // Mix of conventional emojis (more common) and line art emojis (rarer)
-  const conventionalEmojis = ['✨', '🎨', '💫', '🌟', '⭐', '🔥', '💎', '🚀', '⚡', '💝', '🎉', '🌈', '💖', '🎯', '🎪', '🎭', '🎨', '🎵', '🎸', '🍕', '🍰', '☕', '🎮'];
-  const lineArtEmojis = ['☾', '☽', '◐', '◑', '◒', '◓', '△', '▽', '◯', '◊', '※', '⟡', '⬟', '⬢', '⬡'];
+  // Regular fun emojis (90% chance) and some line art emojis (10% chance for variety)
+  const regularEmojis = ['✨', '🎨', '💫', '🌟', '⭐', '🔥', '💎', '🚀', '⚡', '💝', '🎉', '🌈', '💖', '🎯', '🎪', '🎭', '🎵', '🎸', '🍕', '🍰', '☕', '🎮', '🎲', '🎈', '🎊', '🦄', '🌻', '🍀', '🌙', '☀️', '🎃', '🍭', '🧸', '🎺', '🎻'];
+  const lineArtEmojis = ['☾', '☽', '◐', '◑', '△', '▽', '◯', '◊'];
 
   useEffect(() => {
     const createEmoji = (id: number) => {
-      // 80% chance for conventional emoji, 20% for line art
-      const useConventional = Math.random() < 0.8;
-      const emojiArray = useConventional ? conventionalEmojis : lineArtEmojis;
+      // 90% chance for regular emoji, 10% for line art
+      const useRegular = Math.random() < 0.9;
+      const emojiArray = useRegular ? regularEmojis : lineArtEmojis;
       
       return {
         id,
@@ -35,7 +35,7 @@ const BackgroundParticles = () => {
       };
     };
 
-    const initialParticles = Array.from({ length: 18 }, (_, i) => createEmoji(i));
+    const initialParticles = Array.from({ length: 20 }, (_, i) => createEmoji(i));
     setParticles(initialParticles);
   }, []);
 
@@ -56,12 +56,12 @@ const BackgroundParticles = () => {
           Math.pow(particle.y - mousePosition.y, 2)
         );
         
-        // More responsive mouse influence
-        const maxInfluenceDistance = 200;
-        const influence = Math.max(0, maxInfluenceDistance - distanceFromMouse) / maxInfluenceDistance;
-        const mouseEffect = influence * particle.mouseInfluence * 25;
+        // More responsive mouse influence with better accuracy
+        const maxInfluenceDistance = 150;
+        const influence = Math.max(0, (maxInfluenceDistance - distanceFromMouse) / maxInfluenceDistance);
+        const mouseEffect = influence * particle.mouseInfluence * 30;
         
-        // Calculate direction away from mouse
+        // Calculate direction away from mouse with better precision
         const dx = particle.x - mousePosition.x;
         const dy = particle.y - mousePosition.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
@@ -69,10 +69,12 @@ const BackgroundParticles = () => {
         let newX = particle.x;
         let newY = particle.y;
         
-        if (distance > 0 && influence > 0) {
-          // Move away from mouse
-          newX += (dx / distance) * mouseEffect * 0.3;
-          newY += (dy / distance) * mouseEffect * 0.3;
+        if (distance > 0 && influence > 0.1) {
+          // Move away from mouse with more accurate direction
+          const normalizedDx = dx / distance;
+          const normalizedDy = dy / distance;
+          newX += normalizedDx * mouseEffect * 0.5;
+          newY += normalizedDy * mouseEffect * 0.5;
         }
         
         // Normal movement
@@ -90,7 +92,7 @@ const BackgroundParticles = () => {
           y: newY,
         };
       }));
-    }, 30); // Faster update for more responsive movement
+    }, 25); // Slightly faster for more responsive movement
 
     return () => clearInterval(interval);
   }, [mousePosition]);
@@ -100,13 +102,13 @@ const BackgroundParticles = () => {
       {particles.map(particle => (
         <div
           key={particle.id}
-          className="absolute particle opacity-25 hover:opacity-50 transition-opacity duration-300"
+          className="absolute particle opacity-30 hover:opacity-60 transition-opacity duration-300"
           style={{
             left: `${particle.x}px`,
             top: `${particle.y}px`,
             fontSize: `${particle.size}px`,
-            animationDelay: `${particle.id * 0.3}s`,
-            filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.1))',
+            animationDelay: `${particle.id * 0.2}s`,
+            filter: 'drop-shadow(0 0 6px rgba(255,255,255,0.15))',
           }}
         >
           {particle.emoji}
