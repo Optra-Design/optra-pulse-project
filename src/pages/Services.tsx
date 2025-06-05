@@ -116,12 +116,12 @@ const Services = () => {
                 <div className="glass p-6 rounded-2xl">
                   <h3 className="text-2xl font-bold text-gradient mb-3">Nyve Design</h3>
                   <p className="text-foreground/70 mb-4">
-                    Complete digital presence for a creative design agency focused on converting visitors into customers.
+                    Strategic social media marketing campaign for a creative design agency to boost brand awareness and engagement.
                   </p>
                   <div className="flex flex-wrap gap-2 mb-4">
-                    <span className="px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-sm">Web Design</span>
-                    <span className="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-sm">Brand Identity</span>
-                    <span className="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-sm">UX Strategy</span>
+                    <span className="px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-sm">Social Media</span>
+                    <span className="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-sm">Content Strategy</span>
+                    <span className="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-sm">Brand Promotion</span>
                   </div>
                   <a 
                     href="https://www.nyvedesign.com" 
@@ -129,7 +129,7 @@ const Services = () => {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-gradient font-semibold hover:gap-3 transition-all duration-300"
                   >
-                    Visit Live Site
+                    Visit Their Site
                     <ArrowRight className="w-4 h-4" />
                   </a>
                 </div>
@@ -138,7 +138,7 @@ const Services = () => {
               <div className="relative">
                 <div className="aspect-video bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden relative group hover:scale-105 transition-transform duration-300">
                   <img 
-                    src="/lovable-uploads/07d43da9-06f8-4309-ab1f-36e3e216d5ad.png"
+                    src="/lovable-uploads/f22e14e2-2c25-450a-bb62-2e9df3e38c3b.png"
                     alt="Nyve Design Website Screenshot"
                     className="w-full h-full object-cover"
                   />

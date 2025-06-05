@@ -182,7 +182,7 @@ const Index = () => {
                   <div>
                     <h4 className="text-white font-medium mb-1">Nyve Design</h4>
                     <p className="text-zinc-400 text-sm">
-                      Creative design studio platform - 
+                      Social media marketing strategy - 
                       <a href="https://www.nyvedesign.com" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 transition-colors ml-1">
                         www.nyvedesign.com
                       </a>
