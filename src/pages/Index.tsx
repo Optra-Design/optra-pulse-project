@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import Navigation from '../components/Navigation';
 import AnimatedHeroText from '../components/AnimatedHeroText';
@@ -203,29 +202,12 @@ const Index = () => {
             
             <div className="relative">
               <div className="aspect-square bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-zinc-800/50 to-zinc-900/50" />
-                
-                {/* Nyve Design Screenshot Mockup */}
-                <div className="absolute inset-4 bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg border border-zinc-700 overflow-hidden">
-                  <div className="h-8 bg-zinc-800 border-b border-zinc-700 flex items-center px-4">
-                    <div className="flex gap-2">
-                      <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                      <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                      <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                    </div>
-                    <div className="ml-4 text-xs text-zinc-400">nyvedesign.com</div>
-                  </div>
-                  <div className="p-6 space-y-4">
-                    <div className="h-4 bg-gradient-to-r from-orange-400 to-pink-400 rounded w-32"></div>
-                    <div className="h-2 bg-zinc-600 rounded w-full"></div>
-                    <div className="h-2 bg-zinc-700 rounded w-3/4"></div>
-                    <div className="grid grid-cols-2 gap-4 mt-6">
-                      <div className="h-16 bg-zinc-700 rounded"></div>
-                      <div className="h-16 bg-zinc-700 rounded"></div>
-                    </div>
-                    <div className="h-8 bg-gradient-to-r from-purple-400 to-blue-400 rounded w-24 mt-4"></div>
-                  </div>
-                </div>
+                <img 
+                  src="/lovable-uploads/67b4cc52-5a7d-48bb-a24d-a7ff5c22d39d.png"
+                  alt="Nyve Design Website Screenshot"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
               </div>
             </div>
           </div>
