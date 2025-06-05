@@ -24,9 +24,13 @@ const BackgroundParticles = () => {
       const useRegular = Math.random() < 0.9;
       const emojiArray = useRegular ? regularEmojis : lineArtEmojis;
       
+      // Start emojis from screen edges to prevent appearing out of nowhere
+      const startFromLeft = Math.random() < 0.5;
+      const startX = startFromLeft ? -50 : window.innerWidth + 50;
+      
       return {
         id,
-        x: Math.random() * window.innerWidth,
+        x: startX,
         y: Math.random() * window.innerHeight,
         emoji: emojiArray[Math.floor(Math.random() * emojiArray.length)],
         size: Math.random() * 15 + 12,
@@ -77,12 +81,21 @@ const BackgroundParticles = () => {
           newY += normalizedDy * mouseEffect * 0.5;
         }
         
-        // Normal movement
+        // Normal movement - always move right for particles starting from left
         newX += particle.speed;
         newY += Math.sin(Date.now() * 0.001 + particle.id) * 0.8;
         
-        // Wrap around screen
-        if (newX > window.innerWidth + 50) newX = -50;
+        // When particle goes off screen, create new one from edge
+        if (newX > window.innerWidth + 50 || newX < -50) {
+          return {
+            ...particle,
+            x: -50, // Always start new particles from left edge
+            y: Math.random() * window.innerHeight,
+            emoji: (Math.random() < 0.9 ? regularEmojis : lineArtEmojis)[Math.floor(Math.random() * (Math.random() < 0.9 ? regularEmojis : lineArtEmojis).length)],
+          };
+        }
+        
+        // Wrap around screen vertically
         if (newY > window.innerHeight + 50) newY = -50;
         if (newY < -50) newY = window.innerHeight + 50;
         
@@ -95,20 +108,20 @@ const BackgroundParticles = () => {
     }, 25); // Slightly faster for more responsive movement
 
     return () => clearInterval(interval);
-  }, [mousePosition]);
+  }, [mousePosition, regularEmojis, lineArtEmojis]);
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0">
       {particles.map(particle => (
         <div
           key={particle.id}
-          className="absolute particle opacity-30 hover:opacity-60 transition-opacity duration-300"
+          className="absolute particle opacity-40 hover:opacity-70 transition-opacity duration-300"
           style={{
             left: `${particle.x}px`,
             top: `${particle.y}px`,
             fontSize: `${particle.size}px`,
             animationDelay: `${particle.id * 0.2}s`,
-            filter: 'drop-shadow(0 0 6px rgba(255,255,255,0.15))',
+            filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.2)) saturate(1.4) brightness(1.1)',
           }}
         >
           {particle.emoji}

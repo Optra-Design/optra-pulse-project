@@ -15,8 +15,8 @@ const AnimatedHeroText = () => {
       setTimeout(() => {
         setCurrentWordIndex((prev) => (prev + 1) % descriptors.length);
         setIsAnimating(false);
-      }, 200); // Faster transition - reduced from 400ms to 200ms
-    }, 2000); // Faster cycle - reduced from 3500ms to 2000ms
+      }, 300); // Slightly slower transition
+    }, 3500); // Much slower cycle - back to 3.5 seconds
 
     return () => clearInterval(interval);
   }, []);
@@ -27,7 +27,7 @@ const AnimatedHeroText = () => {
         <div className="text-6xl md:text-7xl lg:text-8xl font-light leading-none tracking-tight">
           <div className="relative inline-block">
             <span 
-              className={`text-gradient-accent transition-all duration-300 ${
+              className={`text-gradient-accent transition-all duration-500 ${
                 isAnimating ? 'opacity-0 transform translate-y-2' : 'opacity-100 transform translate-y-0'
               }`}
             >
@@ -59,7 +59,8 @@ const AnimatedHeroText = () => {
       <div className="pt-12">
         <Link 
           to="/contact"
-          className="group inline-flex items-center gap-4 px-8 py-4 bg-gradient-to-r from-zinc-900 to-zinc-800 border border-zinc-700 text-zinc-200 font-semibold rounded-xl transition-all duration-300 hover:border-zinc-600 hover:text-white hover:shadow-2xl hover:shadow-orange-500/20 hover-lift"
+          className="group inline-flex items-center gap-4 px-8 py-4 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white font-semibold rounded-xl transition-all duration-300 hover:from-pink-400 hover:via-purple-400 hover:to-blue-400 hover:shadow-2xl hover:shadow-purple-500/30 hover-lift animate-pulse"
+          style={{ animationDuration: '3s' }}
         >
           Let's work together
           <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />

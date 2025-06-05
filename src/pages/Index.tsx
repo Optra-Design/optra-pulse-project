@@ -87,40 +87,42 @@ const Index = () => {
       <Navigation />
       <SecretSudoButton />
       
-      {/* Enhanced Fun Background Elements */}
+      {/* Enhanced Fun Background Elements with More Vibrant Colors */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Animated colorful orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-pink-500/20 to-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute top-3/4 right-1/4 w-80 h-80 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
-        <div className="absolute top-1/2 left-1/2 w-72 h-72 bg-gradient-to-r from-orange-500/15 to-yellow-500/15 rounded-full blur-3xl animate-pulse" style={{animationDelay: '4s'}}></div>
+        {/* Animated colorful orbs with enhanced vibrancy */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-pink-400/40 to-purple-400/40 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute top-3/4 right-1/4 w-80 h-80 bg-gradient-to-r from-blue-400/40 to-cyan-400/40 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-1/2 left-1/2 w-72 h-72 bg-gradient-to-r from-orange-400/35 to-yellow-400/35 rounded-full blur-3xl animate-pulse" style={{animationDelay: '4s'}}></div>
         
-        {/* Fun animated grid pattern */}
-        <div className="absolute inset-0 opacity-[0.05]">
+        {/* Enhanced fun animated grid pattern with more color */}
+        <div className="absolute inset-0 opacity-[0.1]">
           <div className="absolute inset-0 animate-pulse" style={{
             backgroundImage: `
-              linear-gradient(rgba(255,107,53,0.3) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(233,30,99,0.3) 1px, transparent 1px)
+              linear-gradient(rgba(255,107,53,0.6) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(233,30,99,0.6) 1px, transparent 1px)
             `,
             backgroundSize: '40px 40px',
             animationDuration: '8s'
           }} />
         </div>
         
-        {/* Floating geometric shapes */}
-        <div className="absolute top-20 left-20 w-4 h-4 bg-gradient-to-r from-pink-400 to-purple-400 rotate-45 animate-bounce opacity-30" style={{animationDelay: '1s'}}></div>
-        <div className="absolute top-40 right-32 w-6 h-6 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full animate-bounce opacity-40" style={{animationDelay: '3s'}}></div>
-        <div className="absolute bottom-32 left-40 w-5 h-5 bg-gradient-to-r from-orange-400 to-yellow-400 rotate-12 animate-bounce opacity-35" style={{animationDelay: '5s'}}></div>
-        <div className="absolute top-60 right-60 w-3 h-3 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full animate-bounce opacity-30" style={{animationDelay: '7s'}}></div>
+        {/* Enhanced floating geometric shapes with brighter colors */}
+        <div className="absolute top-20 left-20 w-4 h-4 bg-gradient-to-r from-pink-500 to-purple-500 rotate-45 animate-bounce opacity-60" style={{animationDelay: '1s'}}></div>
+        <div className="absolute top-40 right-32 w-6 h-6 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-bounce opacity-70" style={{animationDelay: '3s'}}></div>
+        <div className="absolute bottom-32 left-40 w-5 h-5 bg-gradient-to-r from-orange-500 to-yellow-500 rotate-12 animate-bounce opacity-65" style={{animationDelay: '5s'}}></div>
+        <div className="absolute top-60 right-60 w-3 h-3 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full animate-bounce opacity-60" style={{animationDelay: '7s'}}></div>
+        <div className="absolute bottom-60 left-60 w-4 h-4 bg-gradient-to-r from-red-500 to-pink-500 rotate-45 animate-bounce opacity-55" style={{animationDelay: '9s'}}></div>
+        <div className="absolute top-80 left-80 w-5 h-5 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-full animate-bounce opacity-65" style={{animationDelay: '11s'}}></div>
       </div>
       
       {/* Hero Section */}
       <section className="min-h-screen flex items-center justify-center px-6 relative z-10">
-        {/* Subtle grid pattern */}
-        <div className="absolute inset-0 opacity-[0.03]">
+        {/* Enhanced subtle grid pattern with more vibrance */}
+        <div className="absolute inset-0 opacity-[0.06]">
           <div className="absolute inset-0" style={{
             backgroundImage: `
-              linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
+              linear-gradient(rgba(255,107,53,0.3) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(233,30,99,0.3) 1px, transparent 1px)
             `,
             backgroundSize: '24px 24px'
           }} />
@@ -128,9 +130,9 @@ const Index = () => {
         
         <AnimatedHeroText />
         
-        {/* Enhanced accent element with color */}
+        {/* Enhanced accent element with more vibrant color */}
         <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2">
-          <div className="w-px h-16 bg-gradient-to-b from-purple-500/60 via-pink-500/40 to-transparent animate-pulse" />
+          <div className="w-px h-16 bg-gradient-to-b from-purple-400/90 via-pink-400/70 to-transparent animate-pulse" />
         </div>
       </section>
 
@@ -139,7 +141,7 @@ const Index = () => {
         <div className="max-w-6xl mx-auto">
           <div className="mb-20">
             <div className="flex items-center gap-3 mb-8">
-              <div className="w-8 h-px bg-gradient-to-r from-pink-500/60 to-transparent" />
+              <div className="w-8 h-px bg-gradient-to-r from-pink-400/90 to-transparent" />
               <span className="text-sm font-medium text-zinc-400 tracking-wider uppercase">Capabilities</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-light text-white leading-tight mb-6 max-w-3xl">
