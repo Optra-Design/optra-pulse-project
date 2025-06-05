@@ -138,7 +138,7 @@ const Services = () => {
               <div className="relative">
                 <div className="aspect-video bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden relative group hover:scale-105 transition-transform duration-300">
                   <img 
-                    src="/lovable-uploads/f22e14e2-2c25-450a-bb62-2e9df3e38c3b.png"
+                    src="/lovable-uploads/67b4cc52-5a7d-48bb-a24d-a7ff5c22d39d.png"
                     alt="Nyve Design Website Screenshot"
                     className="w-full h-full object-cover"
                   />
